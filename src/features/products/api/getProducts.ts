@@ -1,11 +1,19 @@
 import type { Product } from '../types';
 
+export interface PaginatedProducts {
+    data: Product[];
+    meta: {
+        total: number;
+        page: number;
+        lastPage: number;
+    };
+}
+
 /**
- * Función encargada de obtener la lista completa de productos desde el backend.
- * Centralizamos esto aquí para mantener el código más limpio y modular.
+ * Función encargada de obtener la lista paginada de productos desde el backend.
  */
-export const getProducts = async (): Promise<Product[]> => {
-    const response = await fetch('http://localhost:3000/products');
+export const getProducts = async (page: number = 1, limit: number = 10): Promise<PaginatedProducts> => {
+    const response = await fetch(`http://localhost:3000/products?page=${page}&limit=${limit}`);
 
     if (!response.ok) {
         throw new Error('No se pudo obtener la lista de productos');

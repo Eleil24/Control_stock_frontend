@@ -1,0 +1,165 @@
+.movement-page-wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    background-color: #f8fafc;
+    padding: 1.5rem 1rem;
+    min-height: calc(100vh - 64px);
+}
+
+.movement-form-container {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05), 0 4px 6px rgba(0, 0, 0, 0.02);
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    animation: fadeIn 0.4s ease-out;
+    text-align: left;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.movement-form-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.movement-form-title {
+    margin: 0;
+    color: #111827;
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+.movement-form-subtitle {
+    margin: 0.5rem 0 0;
+    color: #6b7280;
+    font-size: 0.95rem;
+}
+
+.movement-form-group {
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.movement-form-label {
+    margin-bottom: 0.5rem;
+    color: #374151;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.movement-form-input,
+.movement-form-select {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #1f2937;
+    background-color: #f9fafb;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    appearance: none;
+    /* Elimina la flecha de select nativa */
+}
+
+/* Custom flechita para el select */
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.select-wrapper::after {
+    content: "▼";
+    font-size: 0.75rem;
+    color: #6b7280;
+    position: absolute;
+    right: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    /* Para que clics pasen al select real */
+}
+
+.movement-form-input:focus,
+.movement-form-select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.help-text {
+    margin-top: 0.4rem;
+    color: #9ca3af;
+    font-size: 0.8rem;
+}
+
+.movement-form-button {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    background-color: #059669;
+    /* Verde para destacar diferente al azul oscuro del crear */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s;
+    margin-top: 0.5rem;
+}
+
+.movement-form-button:hover {
+    background-color: #047857;
+    box-shadow: 0 4px 12px rgba(4, 120, 87, 0.15);
+}
+
+.movement-form-button:active {
+    transform: scale(0.98);
+}
+
+.movement-form-button:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.movement-form-message {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    text-align: center;
+    font-weight: 500;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.movement-form-message.success {
+    background-color: #ecfdf5;
+    color: #047857;
+    border: 1px solid #a7f3d0;
+}
+
+.movement-form-message.error {
+    background-color: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+}

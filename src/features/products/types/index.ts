@@ -23,3 +23,20 @@ export interface CreateProductDto {
     description: string;
     price: number;
 }
+
+export interface CreateStockMovementDto {
+    productId: number;
+    type: string;
+    quantity: number;
+}
+
+// Representa un Movimiento de Stock devuelto por el backend
+export interface StockMovement {
+    id: number;
+    type: 'IN' | 'OUT' | 'ADJUSTMENT' | string;
+    quantity: number;
+    productId: number;
+    createdAt: string;
+    // Opcionalmente podemos recibir el producto anidado si el backend usa un JOIN
+    product?: Product;
+}

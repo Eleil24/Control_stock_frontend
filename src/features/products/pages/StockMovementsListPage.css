@@ -1,0 +1,134 @@
+.movements-list-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: calc(100vh - 8rem);
+}
+
+.movements-list-container {
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    width: 100%;
+    max-width: 900px;
+    /* Un poco más ancho que los formularios para que la tabla quepa bien */
+}
+
+.movements-list-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.movements-list-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.movements-list-subtitle {
+    color: #6b7280;
+    font-size: 0.95rem;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    /* Para que en móviles se pueda scrollear de lado */
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.movements-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.movements-table th {
+    background-color: #f9fafb;
+    padding: 1rem;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.movements-table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    color: #4b5563;
+    font-size: 0.95rem;
+}
+
+.movements-table tr:last-child td {
+    border-bottom: none;
+}
+
+.movements-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+/* Badges para los tipos de movimiento */
+.movement-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.badge-in {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.badge-out {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+.badge-adj {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+/* Celdas específicas */
+.date-cell {
+    white-space: nowrap;
+    color: #6b7280 !important;
+    font-size: 0.875rem !important;
+}
+
+.product-cell {
+    font-weight: 500;
+    color: #111827 !important;
+}
+
+.quantity-cell {
+    font-weight: 700;
+    color: #111827 !important;
+}
+
+/* Mensajes de estado */
+.empty-message {
+    text-align: center;
+    padding: 3rem !important;
+    color: #6b7280 !important;
+    font-style: italic;
+}
+
+.loading-text,
+.error-text {
+    text-align: center;
+    font-size: 1.125rem;
+    color: #4b5563;
+    padding: 2rem;
+}
+
+.error-text {
+    color: #dc2626;
+}

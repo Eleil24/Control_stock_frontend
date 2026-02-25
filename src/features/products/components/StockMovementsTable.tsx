@@ -7,78 +7,90 @@ import {
     type PaginationState,
     type OnChangeFn
 } from '@tanstack/react-table';
-import type { Product } from '../types';
-import './ProductsTable.css';
+import type { StockMovement } from '../types';
 import './Pagination.css';
 
-interface ProductsTableProps {
-    products: Product[];
+interface StockMovementsTableProps {
+    movements: StockMovement[];
     isLoading?: boolean;
     pageCount: number;
     pagination: PaginationState;
     onPaginationChange: OnChangeFn<PaginationState>;
 }
 
-export const ProductsTable = ({
-    products,
+export const StockMovementsTable = ({
+    movements,
     isLoading,
     pageCount,
     pagination,
     onPaginationChange
-}: ProductsTableProps) => {
+}: StockMovementsTableProps) => {
 
-    const getStockStatus = (stock: number) => {
-        if (stock === 0) return { label: 'Agotado', className: 'stock-out' };
-        if (stock <= 10) return { label: 'Stock Bajo', className: 'stock-low' };
-        return { label: 'En Stock', className: 'stock-ok' };
+    // Función auxiliar para formatear la fecha a algo legible
+    const formatDate = (dateString: string) => {
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric', month: 'short', day: 'numeric',
+            hour: '2-digit', minute: '2-digit'
+        };
+        return new Date(dateString).toLocaleDateString('es-ES', options);
     };
 
-    const columns = useMemo<ColumnDef<Product>[]>(
+    // Función auxiliar para traducir y dar color al tipo de movimiento
+    const getMovementTypeBadge = (type: string) => {
+        switch (type) {
+            case 'IN':
+                return <span className="movement-badge badge-in">Entrada</span>;
+            case 'OUT':
+                return <span className="movement-badge badge-out">Salida</span>;
+            case 'ADJUSTMENT':
+                return <span className="movement-badge badge-adj">Ajuste</span>;
+            default:
+                return <span className="movement-badge">{type}</span>;
+        }
+    };
+
+    const columns = useMemo<ColumnDef<StockMovement>[]>(
         () => [
             {
-                accessorKey: 'id',
-                header: 'ID',
-                cell: (info) => <span className="col-id">#{info.getValue<number>()}</span>,
+                accessorKey: 'createdAt',
+                header: 'Fecha',
+                cell: (info) => <span className="date-cell">{formatDate(info.getValue<string>())}</span>,
             },
             {
-                accessorKey: 'name',
+                id: 'product',
                 header: 'Producto',
-                cell: (info) => <span className="product-name">{info.getValue<string>()}</span>,
-            },
-            {
-                accessorKey: 'stock',
-                header: () => <div className="text-right">Stock</div>,
                 cell: (info) => {
-                    const stock = info.getValue<number>();
-                    const status = getStockStatus(stock);
+                    const mov = info.row.original;
                     return (
-                        <div className="col-stock text-right">
-                            <span className={`stock-number ${status.className}-text`}>
-                                {stock}
-                            </span>
-                        </div>
+                        <span className="product-cell">
+                            {mov.product ? mov.product.name : `ID Producto: ${mov.productId}`}
+                        </span>
                     );
                 },
             },
             {
-                id: 'status',
-                header: 'Estado',
+                accessorKey: 'type',
+                header: 'Tipo de Movimiento',
+                cell: (info) => <div className="type-cell">{getMovementTypeBadge(info.getValue<string>())}</div>,
+            },
+            {
+                id: 'quantity',
+                header: 'Cantidad',
                 cell: (info) => {
-                    const stock = info.row.original.stock;
-                    const status = getStockStatus(stock);
+                    const mov = info.row.original;
                     return (
-                        <span className={`status-badge ${status.className}`}>
-                            {status.label}
+                        <span className="quantity-cell">
+                            {mov.type === 'OUT' ? '-' : '+'}{mov.quantity}
                         </span>
                     );
-                }
+                },
             }
         ],
         []
     );
 
     const table = useReactTable({
-        data: products,
+        data: movements,
         columns,
         pageCount,
         state: {
@@ -89,28 +101,26 @@ export const ProductsTable = ({
         manualPagination: true,
     });
 
-    if (isLoading && !products.length) {
+    if (isLoading && !movements.length) {
         return (
-            <div className="products-table-skeleton">
-                <div className="skeleton-row"></div>
-                <div className="skeleton-row"></div>
-                <div className="skeleton-row"></div>
+            <div className="movements-table-skeleton">
+                <p className="loading-text">Cargando historial de movimientos...</p>
             </div>
         );
     }
 
-    if (!isLoading && !products.length) {
+    if (!isLoading && !movements.length) {
         return (
-            <div className="products-empty-state">
-                <p>No hay productos disponibles.</p>
+            <div className="movements-empty-state">
+                <p className="empty-message">No se encontraron movimientos registrados.</p>
             </div>
         );
     }
 
     return (
         <div className="table-container-wrapper">
-            <div className="products-table-container">
-                <table className={`products-table ${isLoading ? 'table-loading' : ''}`}>
+            <div className="table-wrapper">
+                <table className={`movements-table ${isLoading ? 'table-loading' : ''}`}>
                     <thead>
                         {table.getHeaderGroups().map(headerGroup => (
                             <tr key={headerGroup.id}>
@@ -131,7 +141,7 @@ export const ProductsTable = ({
                         {table.getRowModel().rows.map(row => (
                             <tr key={row.id}>
                                 {row.getVisibleCells().map(cell => (
-                                    <td key={cell.id} className={`col-${cell.column.id}`}>
+                                    <td key={cell.id}>
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </td>
                                 ))}
