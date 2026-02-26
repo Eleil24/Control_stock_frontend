@@ -1,0 +1,25 @@
+/* Resuing styles via imports from other components, but adding specific additions here if needed */
+.text-right {
+    text-align: right;
+}
+
+.val-total {
+    font-weight: 700;
+    color: var(--brand-primary, #10b981);
+}
+
+.col-price,
+.col-valuation,
+.col-stock {
+    padding-right: 1.5rem !important;
+}
+
+td.text-right,
+th .text-right {
+    text-align: right;
+}
+
+.products-table td,
+.products-table th {
+    white-space: nowrap;
+}

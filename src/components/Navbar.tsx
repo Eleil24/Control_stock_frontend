@@ -4,31 +4,34 @@
 import { useState, useRef, useEffect } from 'react';
 import './Navbar.css';
 
+type TabType = 'list' | 'create' | 'movement' | 'movements-list' | 'low-stock-reports' | 'movement-history-reports' | 'inventory-valuation-reports' | 'product-performance-reports';
+type DropdownType = 'products' | 'movements' | 'reports' | null;
+
 // Interface de TypeScript que define qué "props" (propiedades) acepta este componente Navbar al ser llamado desde App.tsx.
 interface NavbarProps {
-    activeTab: 'list' | 'create' | 'movement' | 'movements-list'; // Restringe a cuatro posibles valores exactos (Strings limitados).
-    onTabChange: (tab: 'list' | 'create' | 'movement' | 'movements-list') => void; // Función que recibe un tab y no devuelve nada (void).
+    activeTab: TabType;
+    onTabChange: (tab: TabType) => void;
 }
 
 // Componente Navbar. Desestructuramos las props entre llaves { activeTab, onTabChange } directo en los argumentos.
 export const Navbar = ({ activeTab, onTabChange }: NavbarProps) => {
-    // Estado para saber cuál de los menús desplegables está abierto ('products', 'movements' o null si están cerrados)
-    const [openDropdown, setOpenDropdown] = useState<'products' | 'movements' | null>(null);
+    // Estado para saber cuál de los menús desplegables está abierto
+    const [openDropdown, setOpenDropdown] = useState<DropdownType>(null);
 
     // useRef crea un objeto mutable { current: null }. En React, se usa junto con la propiedad "ref" en un elemento JSX 
     // para decirle "captura el nodo HTML de verdad (ej. un div o un nav) y guárdalo aquí".
     const navRef = useRef<HTMLElement>(null);
 
-    // Función para abrir/cerrar un menú en específico. Se llama cuando haces click en "Productos" o "Movimientos".
-    const toggleDropdown = (dropdown: 'products' | 'movements') => {
+    // Función para abrir/cerrar un menú en específico.
+    const toggleDropdown = (dropdown: NonNullable<DropdownType>) => {
         // En lugar de usar un valor fijo en setState, le pasamos una función flecha. 
         // Su parámetro "prev" contiene el valor actual del estado justo en ese microsegundo.
         // Forma de entenderlo corto: ¿El que quieres abrir ya estaba abierto? Sí -> ciérralo (null). No -> ábrelo (dropdown).
         setOpenDropdown(prev => prev === dropdown ? null : dropdown);
     };
 
-    // Función que se dispara cuando el usuario hace clic en una opción final del menú (Ej. "Inventario").
-    const handleSelect = (tab: 'list' | 'create' | 'movement' | 'movements-list') => {
+    // Función que se dispara cuando el usuario hace clic en una opción final del menú.
+    const handleSelect = (tab: TabType) => {
         onTabChange(tab);       // Ejecuta la función que vino desde App.tsx cambiar de pantalla.
         setOpenDropdown(null);  // Al elegir algo, cerramos automáticamente los menús desplegables (poniendo "null").
     };
@@ -130,6 +133,52 @@ export const Navbar = ({ activeTab, onTabChange }: NavbarProps) => {
                                     onClick={() => handleSelect('movements-list')}
                                 >
                                     <span className="icon">📅</span> Historial Movimientos
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* REPORTES DROPDOWN */}
+                    <div className="nav-item-dropdown">
+                        <button
+                            className={`nav-btn ${openDropdown === 'reports' ? 'active' : ''}`}
+                            onClick={() => toggleDropdown('reports')}
+                            aria-expanded={openDropdown === 'reports'}
+                        >
+                            Reportes
+                            <svg
+                                className={`dropdown-icon ${openDropdown === 'reports' ? 'open' : ''}`}
+                                width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                            >
+                                <path d="m6 9 6 6 6-6" />
+                            </svg>
+                        </button>
+
+                        {openDropdown === 'reports' && (
+                            <div className="dropdown-menu">
+                                <button
+                                    className={`dropdown-item ${activeTab === 'low-stock-reports' ? 'selected' : ''}`}
+                                    onClick={() => handleSelect('low-stock-reports')}
+                                >
+                                    <span className="icon">📉</span> Bajo Stock
+                                </button>
+                                <button
+                                    className={`dropdown-item ${activeTab === 'movement-history-reports' ? 'selected' : ''}`}
+                                    onClick={() => handleSelect('movement-history-reports')}
+                                >
+                                    <span className="icon">📊</span> Movimientos
+                                </button>
+                                <button
+                                    className={`dropdown-item ${activeTab === 'inventory-valuation-reports' ? 'selected' : ''}`}
+                                    onClick={() => handleSelect('inventory-valuation-reports')}
+                                >
+                                    <span className="icon">💰</span> Valoración
+                                </button>
+                                <button
+                                    className={`dropdown-item ${activeTab === 'product-performance-reports' ? 'selected' : ''}`}
+                                    onClick={() => handleSelect('product-performance-reports')}
+                                >
+                                    <span className="icon">🚀</span> Desempeño
                                 </button>
                             </div>
                         )}

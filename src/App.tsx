@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 // Importamos los componentes "Página" que se van a mostrar dependiendo de qué "pestaña" (tab) esté activa.
-import { CreateProductPage, ProductsListPage } from './features/products';
+import { CreateProductPage, ProductsListPage, LowStockReportsPage, MovementHistoryReportsPage, InventoryValuationReportsPage, ProductPerformanceReportsPage } from './features/products';
 import { CreateMovementPage } from './features/products/pages/CreateMovementPage';
 import { StockMovementsListPage } from './features/products/pages/StockMovementsListPage';
 
@@ -16,7 +16,7 @@ import './App.css';
 // Componente principal que envuelve toda nuestra aplicación.
 function App() {
   // Estado para controlar qué pantalla se está viendo.
-  const [activeTab, setActiveTab] = useState<'list' | 'create' | 'movement' | 'movements-list'>('list');
+  const [activeTab, setActiveTab] = useState<'list' | 'create' | 'movement' | 'movements-list' | 'low-stock-reports' | 'movement-history-reports' | 'inventory-valuation-reports' | 'product-performance-reports'>('list');
 
   // Lo que la función retorna (su return) es el código JSX (HTML mezclado con Javascript) que se dibujará en pantalla.
   return (
@@ -30,6 +30,10 @@ function App() {
         {activeTab === 'create' && <CreateProductPage />}
         {activeTab === 'movement' && <CreateMovementPage />}
         {activeTab === 'movements-list' && <StockMovementsListPage />}
+        {activeTab === 'low-stock-reports' && <LowStockReportsPage />}
+        {activeTab === 'movement-history-reports' && <MovementHistoryReportsPage />}
+        {activeTab === 'inventory-valuation-reports' && <InventoryValuationReportsPage />}
+        {activeTab === 'product-performance-reports' && <ProductPerformanceReportsPage />}
       </main>
     </div>
   )

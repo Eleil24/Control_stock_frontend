@@ -13,6 +13,7 @@ export interface Product {
     price: number;       // Precio en formato numérico (obligatorio)
     stock: number;       // Cantidad en stock (obligatorio)
     createdAt?: string;  // Fecha de creación
+    valuation?: number;  // Valoración total del producto (price * stock)
 }
 
 // Esta interfaz o DTO (Data Transfer Object) representa los datos exactos que 
@@ -39,4 +40,14 @@ export interface StockMovement {
     createdAt: string;
     // Opcionalmente podemos recibir el producto anidado si el backend usa un JOIN
     product?: Product;
+}
+
+// Representa el reporte de desempeño de un producto
+export interface ProductPerformance {
+    id: number;
+    name: string;
+    stockCurrent: number;
+    soldQuantity: number;
+    estimatedRevenue: number;
+    price: number;
 }

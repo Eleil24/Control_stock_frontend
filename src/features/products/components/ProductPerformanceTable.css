@@ -1,0 +1,23 @@
+.sold-qty {
+    font-weight: 700;
+    color: var(--brand-primary, #3b82f6);
+}
+
+.revenue-total {
+    font-weight: 700;
+    color: #8b5cf6;
+    /* A distinct purple-ish color for revenue */
+}
+
+.col-stockCurrent,
+.col-soldQuantity,
+.col-estimatedRevenue {
+    padding-right: 1.5rem !important;
+}
+
+/* Ensure our new alignments are matched with headers */
+th .text-right {
+    text-align: right;
+    display: block;
+    width: 100%;
+}

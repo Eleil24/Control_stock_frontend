@@ -1,0 +1,98 @@
+.low-stock-page {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.low-stock-page-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 2rem;
+    gap: 1.5rem;
+}
+
+.low-stock-title {
+    font-size: 1.8rem;
+    color: #1a1a1a;
+    margin: 0 0 0.5rem 0;
+    font-weight: 700;
+}
+
+.low-stock-subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin: 0;
+}
+
+.threshold-control {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background-color: white;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #eaeaea;
+}
+
+.threshold-control label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #444;
+}
+
+.threshold-input {
+    width: 80px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    text-align: center;
+    transition: border-color 0.2s;
+}
+
+.threshold-input:focus {
+    outline: none;
+    border-color: #0066cc;
+    box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+}
+
+.low-stock-error {
+    background-color: #fff2f2;
+    border-left: 4px solid #cc0000;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 4px;
+}
+
+.low-stock-error p {
+    margin: 0;
+    color: #cc0000;
+    font-weight: 500;
+}
+
+.low-stock-content {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eaeaea;
+    overflow: hidden;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .low-stock-page {
+        padding: 1rem;
+    }
+
+    .low-stock-page-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .threshold-control {
+        justify-content: space-between;
+    }
+}

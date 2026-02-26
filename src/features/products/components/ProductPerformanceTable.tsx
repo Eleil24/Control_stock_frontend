@@ -7,91 +7,81 @@ import {
     type PaginationState,
     type OnChangeFn
 } from '@tanstack/react-table';
-import type { StockMovement } from '../types';
-import './Pagination.css';
+import type { ProductPerformance } from '../types';
+import '../components/ProductsTable.css'; // Reusing base table styles
+import '../components/Pagination.css';
+import './ProductPerformanceTable.css';
 
-interface StockMovementsTableProps {
-    movements: StockMovement[];
+interface ProductPerformanceTableProps {
+    performanceData: ProductPerformance[];
     isLoading?: boolean;
     pageCount: number;
     pagination: PaginationState;
     onPaginationChange: OnChangeFn<PaginationState>;
 }
 
-export const StockMovementsTable = ({
-    movements,
+export const ProductPerformanceTable = ({
+    performanceData,
     isLoading,
     pageCount,
     pagination,
     onPaginationChange
-}: StockMovementsTableProps) => {
+}: ProductPerformanceTableProps) => {
 
-    // Función auxiliar para formatear la fecha a algo legible
-    const formatDate = (dateString: string) => {
-        const options: Intl.DateTimeFormatOptions = {
-            year: 'numeric', month: 'short', day: 'numeric',
-            hour: '2-digit', minute: '2-digit',
-            timeZone: 'UTC' // Added to force display exact server time
-        };
-        return new Date(dateString).toLocaleDateString('es-ES', options);
-    };
-
-    // Función auxiliar para traducir y dar color al tipo de movimiento
-    const getMovementTypeBadge = (type: string) => {
-        switch (type) {
-            case 'IN':
-                return <span className="movement-badge badge-in">Entrada</span>;
-            case 'OUT':
-                return <span className="movement-badge badge-out">Salida</span>;
-            case 'ADJUSTMENT':
-                return <span className="movement-badge badge-adj">Ajuste</span>;
-            default:
-                return <span className="movement-badge">{type}</span>;
-        }
-    };
-
-    const columns = useMemo<ColumnDef<StockMovement>[]>(
+    const columns = useMemo<ColumnDef<ProductPerformance>[]>(
         () => [
             {
-                accessorKey: 'createdAt',
-                header: 'Fecha',
-                cell: (info) => <span className="date-cell">{formatDate(info.getValue<string>())}</span>,
+                accessorKey: 'id',
+                header: 'ID',
+                cell: (info) => <span className="col-id">#{info.getValue<number>()}</span>,
             },
             {
-                id: 'product',
+                accessorKey: 'name',
                 header: 'Producto',
-                cell: (info) => {
-                    const mov = info.row.original;
-                    return (
-                        <span className="product-cell">
-                            {mov.product ? mov.product.name : `ID Producto: ${mov.productId}`}
-                        </span>
-                    );
-                },
+                cell: (info) => <span className="product-name">{info.getValue<string>()}</span>,
             },
             {
-                accessorKey: 'type',
-                header: 'Tipo de Movimiento',
-                cell: (info) => <div className="type-cell">{getMovementTypeBadge(info.getValue<string>())}</div>,
+                accessorKey: 'stockCurrent',
+                header: () => <div className="text-right">Stock Actual</div>,
+                cell: (info) => (
+                    <div className="text-right">
+                        <span>{info.getValue<number>()}</span>
+                    </div>
+                ),
             },
             {
-                id: 'quantity',
-                header: 'Cantidad',
-                cell: (info) => {
-                    const mov = info.row.original;
-                    return (
-                        <span className="quantity-cell">
-                            {mov.type === 'OUT' ? '-' : '+'}{mov.quantity}
-                        </span>
-                    );
-                },
+                accessorKey: 'soldQuantity',
+                header: () => <div className="text-right">Cant. Vendida</div>,
+                cell: (info) => (
+                    <div className="text-right font-bold text-blue-600">
+                        <span className="sold-qty">{info.getValue<number>()}</span>
+                    </div>
+                ),
+            },
+            {
+                accessorKey: 'price',
+                header: () => <div className="text-right">Precio Unitario</div>,
+                cell: (info) => (
+                    <div className="text-right">
+                        <span>${info.getValue<number>().toFixed(2)}</span>
+                    </div>
+                ),
+            },
+            {
+                accessorKey: 'estimatedRevenue',
+                header: () => <div className="text-right">Ingreso Estimado</div>,
+                cell: (info) => (
+                    <div className="text-right">
+                        <span className="revenue-total">${info.getValue<number>().toFixed(2)}</span>
+                    </div>
+                ),
             }
         ],
         []
     );
 
     const table = useReactTable({
-        data: movements,
+        data: performanceData,
         columns,
         pageCount,
         state: {
@@ -102,26 +92,36 @@ export const StockMovementsTable = ({
         manualPagination: true,
     });
 
-    if (isLoading && !movements.length) {
+    const formatCurrency = (amount: number) => {
+        return new Intl.NumberFormat('es-CO', {
+            style: 'currency',
+            currency: 'COP',
+            minimumFractionDigits: 0
+        }).format(amount);
+    }
+
+    if (isLoading && !performanceData.length) {
         return (
-            <div className="movements-table-skeleton">
-                <p className="loading-text">Cargando historial de movimientos...</p>
+            <div className="products-table-skeleton">
+                <div className="skeleton-row"></div>
+                <div className="skeleton-row"></div>
+                <div className="skeleton-row"></div>
             </div>
         );
     }
 
-    if (!isLoading && !movements.length) {
+    if (!isLoading && !performanceData.length) {
         return (
-            <div className="movements-empty-state">
-                <p className="empty-message">No se encontraron movimientos registrados.</p>
+            <div className="products-empty-state">
+                <p>No hay datos de desempeño para mostrar en este reporte.</p>
             </div>
         );
     }
 
     return (
         <div className="table-container-wrapper">
-            <div className="table-wrapper">
-                <table className={`movements-table ${isLoading ? 'table-loading' : ''}`}>
+            <div className="products-table-container">
+                <table className={`products-table ${isLoading ? 'table-loading' : ''}`}>
                     <thead>
                         {table.getHeaderGroups().map(headerGroup => (
                             <tr key={headerGroup.id}>
@@ -141,11 +141,23 @@ export const StockMovementsTable = ({
                     <tbody>
                         {table.getRowModel().rows.map(row => (
                             <tr key={row.id}>
-                                {row.getVisibleCells().map(cell => (
-                                    <td key={cell.id}>
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </td>
-                                ))}
+                                {row.getVisibleCells().map(cell => {
+                                    let content = flexRender(cell.column.columnDef.cell, cell.getContext());
+
+                                    // Apply custom class formatting
+                                    if (cell.column.id === 'price' || cell.column.id === 'estimatedRevenue') {
+                                        const val = cell.getValue() as number;
+                                        content = <span className={cell.column.id === 'estimatedRevenue' ? 'revenue-total' : ''}>{formatCurrency(val)}</span>;
+                                    }
+
+                                    const isRightAligned = ['stockCurrent', 'soldQuantity', 'price', 'estimatedRevenue'].includes(cell.column.id);
+
+                                    return (
+                                        <td key={cell.id} className={`col-${cell.column.id} ${isRightAligned ? 'text-right' : ''}`}>
+                                            {content}
+                                        </td>
+                                    );
+                                })}
                             </tr>
                         ))}
                     </tbody>
