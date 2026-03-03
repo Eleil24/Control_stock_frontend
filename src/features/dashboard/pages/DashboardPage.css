@@ -1,0 +1,180 @@
+/* =========================================================
+   ESTILOS PARA NUESTRO DASHBOARD (OVERVIEW PANEL)
+========================================================= */
+
+.dashboard-page-wrapper {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.dashboard-header {
+    margin-bottom: 2.5rem;
+}
+
+.dashboard-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-primary, #111827);
+    margin: 0 0 0.5rem 0;
+}
+
+.dashboard-subtitle {
+    color: var(--text-secondary, #6b7280);
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+/* =========================================================
+   GRILLA DE INDICADORES (KPIs)
+   Usamos CSS Grid para que auto-acomode de 1 a 4 columnas 
+   según el tamaño de la pantalla del usuario (Responsivo).
+========================================================= */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.kpi-card {
+    background-color: white;
+    border-radius: 16px;
+    /* Bordes bien redondeados estilo moderno */
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    /* Glassmorphism sutil / Sombras elegantes para que resalten 3D */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(229, 231, 235, 0.5);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+    /* Pequeño salto hacia arriba al pasar el mouse */
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+}
+
+.kpi-icon {
+    font-size: 2.5rem;
+    padding: 1rem;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.kpi-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.kpi-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #6b7280;
+    margin: 0 0 0.25rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.kpi-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #111827;
+    margin: 0;
+    line-height: 1;
+}
+
+/* 
+  Estilos específicos de las tarjetas, creando un cuadradito 
+  traslúcido con color especial para cada ícono.
+*/
+.card-primary .kpi-icon {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.card-secondary .kpi-icon {
+    background-color: rgba(16, 185, 129, 0.1);
+}
+
+.card-warning .kpi-icon {
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+.card-warning .kpi-value {
+    color: #ef4444;
+    /* Si hay alertas de stock, el número se pone rojo también */
+}
+
+.card-info .kpi-icon {
+    background-color: rgba(139, 92, 246, 0.1);
+}
+
+/* =========================================================
+   AREA DEL GRÁFICO ESTADÍSTICO (RECHARTS)
+========================================================= */
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.chart-card {
+    background-color: white;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(229, 231, 235, 0.5);
+}
+
+.chart-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 0.5rem 0;
+}
+
+.chart-subtitle {
+    color: #6b7280;
+    font-size: 0.95rem;
+    margin: 0 0 2rem 0;
+}
+
+.chart-container {
+    height: 300px;
+    /* Alto fijo de lienzo para dibujar barras */
+    width: 100%;
+}
+
+/* =========================================================
+   PANTALLA DE CARGA DEL DASHBOARD
+========================================================= */
+.dashboard-loading {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    gap: 1rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+    border: 0.25em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spinner-border .75s linear infinite;
+}
+
+@keyframes spinner-border {
+    to {
+        transform: rotate(360deg);
+    }
+}

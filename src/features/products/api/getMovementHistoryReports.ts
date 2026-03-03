@@ -1,4 +1,5 @@
 import type { StockMovement } from '../types';
+import { api } from '../../../lib/axios';
 
 export interface PaginatedMovementHistory {
     data: StockMovement[];
@@ -14,7 +15,9 @@ export const getMovementHistoryReports = async (
     page: number = 1,
     limit: number = 10,
     productName?: string,
-    type?: string
+    type?: string,
+    startDate?: string,
+    endDate?: string
 ): Promise<PaginatedMovementHistory> => {
     const queryParams = new URLSearchParams({
         page: page.toString(),
@@ -29,12 +32,18 @@ export const getMovementHistoryReports = async (
         queryParams.append('type', type);
     }
 
-    const response = await fetch(`http://localhost:3000/reports/movements?${queryParams.toString()}`);
-
-    if (!response.ok) {
-        throw new Error('Error al obtener el historial de movimientos para el reporte');
+    if (startDate) {
+        queryParams.append('startDate', startDate);
     }
 
-    const data = await response.json();
-    return data;
+    if (endDate) {
+        queryParams.append('endDate', endDate);
+    }
+
+    try {
+        const response = await api.get(`/reports/movements?${queryParams.toString()}`);
+        return response.data;
+    } catch (error) {
+        throw new Error('Error al obtener el historial de movimientos para el reporte');
+    }
 };

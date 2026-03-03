@@ -17,22 +17,22 @@ export const ProductsListPage = () => {
         pageSize: 10,
     });
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            setIsLoading(true);
-            try {
-                // translate 0-based pageIndex to 1-based API page
-                const response = await getProducts(pagination.pageIndex + 1, pagination.pageSize);
-                setProducts(response.data);
-                setPageCount(response.meta.lastPage);
-                setError(null);
-            } catch (err: any) {
-                setError(err.message || 'Error desconocido');
-            } finally {
-                setIsLoading(false);
-            }
-        };
+    const fetchProducts = async () => {
+        setIsLoading(true);
+        try {
+            // translate 0-based pageIndex to 1-based API page
+            const response = await getProducts(pagination.pageIndex + 1, pagination.pageSize);
+            setProducts(response.data);
+            setPageCount(response.meta.lastPage);
+            setError(null);
+        } catch (err: any) {
+            setError(err.message || 'Error desconocido');
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
+    useEffect(() => {
         fetchProducts();
     }, [pagination.pageIndex, pagination.pageSize]);
 
@@ -59,6 +59,7 @@ export const ProductsListPage = () => {
                         pageCount={pageCount}
                         pagination={pagination}
                         onPaginationChange={setPagination}
+                        onProductUpdated={fetchProducts}
                     />
                 </div>
             )}

@@ -14,10 +14,14 @@ export const MovementHistoryReportsPage: React.FC = () => {
     // Filters
     const [productNameFilter, setProductNameFilter] = useState('');
     const [typeFilter, setTypeFilter] = useState('');
+    const [startDateFilter, setStartDateFilter] = useState('');
+    const [endDateFilter, setEndDateFilter] = useState('');
 
     // Values to apply when searching
     const [appliedProductName, setAppliedProductName] = useState('');
     const [appliedType, setAppliedType] = useState('');
+    const [appliedStartDate, setAppliedStartDate] = useState('');
+    const [appliedEndDate, setAppliedEndDate] = useState('');
 
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
@@ -27,14 +31,20 @@ export const MovementHistoryReportsPage: React.FC = () => {
     const handleSearch = () => {
         setAppliedProductName(productNameFilter);
         setAppliedType(typeFilter);
+        setAppliedStartDate(startDateFilter);
+        setAppliedEndDate(endDateFilter);
         setPagination(prev => ({ ...prev, pageIndex: 0 })); // Reset page to 0
     };
 
     const handleClearFilters = () => {
         setProductNameFilter('');
         setTypeFilter('');
+        setStartDateFilter('');
+        setEndDateFilter('');
         setAppliedProductName('');
         setAppliedType('');
+        setAppliedStartDate('');
+        setAppliedEndDate('');
         setPagination(prev => ({ ...prev, pageIndex: 0 }));
     };
 
@@ -47,7 +57,9 @@ export const MovementHistoryReportsPage: React.FC = () => {
                     pagination.pageIndex + 1,
                     pagination.pageSize,
                     appliedProductName || undefined,
-                    appliedType || undefined
+                    appliedType || undefined,
+                    appliedStartDate || undefined,
+                    appliedEndDate || undefined
                 );
 
                 setMovements(response.data);
@@ -63,7 +75,7 @@ export const MovementHistoryReportsPage: React.FC = () => {
         };
 
         fetchMovements();
-    }, [pagination.pageIndex, pagination.pageSize, appliedProductName, appliedType]);
+    }, [pagination.pageIndex, pagination.pageSize, appliedProductName, appliedType, appliedStartDate, appliedEndDate]);
 
     return (
         <div className="movement-reports-page-wrapper">
@@ -102,6 +114,26 @@ export const MovementHistoryReportsPage: React.FC = () => {
                             <option value="OUT">Salida (OUT)</option>
                             <option value="ADJUSTMENT">Ajuste (ADJUSTMENT)</option>
                         </select>
+                    </div>
+
+                    <div className="filter-group">
+                        <label htmlFor="startDate-filter">Fecha Inicio</label>
+                        <input
+                            id="startDate-filter"
+                            type="date"
+                            value={startDateFilter}
+                            onChange={(e) => setStartDateFilter(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="filter-group">
+                        <label htmlFor="endDate-filter">Fecha Fin</label>
+                        <input
+                            id="endDate-filter"
+                            type="date"
+                            value={endDateFilter}
+                            onChange={(e) => setEndDateFilter(e.target.value)}
+                        />
                     </div>
 
                     <div className="filter-actions">

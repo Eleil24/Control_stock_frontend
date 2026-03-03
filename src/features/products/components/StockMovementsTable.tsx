@@ -28,12 +28,25 @@ export const StockMovementsTable = ({
 
     // Función auxiliar para formatear la fecha a algo legible
     const formatDate = (dateString: string) => {
-        const options: Intl.DateTimeFormatOptions = {
-            year: 'numeric', month: 'short', day: 'numeric',
-            hour: '2-digit', minute: '2-digit',
-            timeZone: 'UTC' // Added to force display exact server time
-        };
-        return new Date(dateString).toLocaleDateString('es-ES', options);
+        // Si la fecha ya viene en formato "DD/MM/YYYY, HH:MM:SS" desde el backend
+        if (dateString && dateString.includes(',') && dateString.includes('/')) {
+            return dateString.replace(', ', ' a las ');
+        }
+
+        try {
+            const date = new Date(dateString);
+            if (!isNaN(date.getTime())) {
+                const options: Intl.DateTimeFormatOptions = {
+                    year: 'numeric', month: 'short', day: 'numeric',
+                    hour: '2-digit', minute: '2-digit',
+                };
+                return date.toLocaleDateString('es-ES', options);
+            }
+        } catch (e) {
+            // Ignorar error y devolver el original
+        }
+
+        return dateString;
     };
 
     // Función auxiliar para traducir y dar color al tipo de movimiento

@@ -25,6 +25,12 @@ export interface CreateProductDto {
     price: number;
 }
 
+export interface UpdateProductDto {
+    name?: string;
+    description?: string;
+    price?: number;
+}
+
 export interface CreateStockMovementDto {
     productId: number;
     type: string;
@@ -50,4 +56,14 @@ export interface ProductPerformance {
     soldQuantity: number;
     estimatedRevenue: number;
     price: number;
+}
+
+// Representa el reporte de ganancia neta por producto
+export interface NetProfitReport {
+    productId: number;
+    productName: string;
+    totalSalesForDate: number;
+    totalSales: number;
+    totalPurchases: number;
+    netProfit: number;
 }

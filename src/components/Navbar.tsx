@@ -2,10 +2,41 @@
 // useEffect: Sirve para ejecutar efectos secundarios (como escuchar eventos de mouse de toda la página).
 // useState: Sirve para crear estados cambiantes que recargan la vista.
 import { useState, useRef, useEffect } from 'react';
+import {
+    LayoutDashboard,
+    ShoppingCart,
+    PackagePlus,
+    Box,
+    Building2,
+    PlusCircle,
+    Wrench,
+    TrendingDown,
+    History,
+    CircleDollarSign,
+    TrendingUp,
+    Wallet,
+    LogOut,
+    Users
+} from 'lucide-react';
+import { useAuth } from '../features/auth/context/AuthContext';
 import './Navbar.css';
 
-type TabType = 'list' | 'create' | 'movement' | 'movements-list' | 'low-stock-reports' | 'movement-history-reports' | 'inventory-valuation-reports' | 'product-performance-reports';
-type DropdownType = 'products' | 'movements' | 'reports' | null;
+export type TabType =
+    | 'dashboard'
+    | 'list'
+    | 'create'
+    | 'movement'
+    | 'movements-list'
+    | 'low-stock-reports'
+    | 'movement-history-reports'
+    | 'inventory-valuation-reports'
+    | 'product-performance-reports'
+    | 'net-profit-reports'
+    | 'sale'
+    | 'supplier'
+    | 'purchase'
+    | 'create-user';
+type DropdownType = 'products' | 'movements' | 'reports' | 'sales' | null;
 
 // Interface de TypeScript que define qué "props" (propiedades) acepta este componente Navbar al ser llamado desde App.tsx.
 interface NavbarProps {
@@ -17,6 +48,7 @@ interface NavbarProps {
 export const Navbar = ({ activeTab, onTabChange }: NavbarProps) => {
     // Estado para saber cuál de los menús desplegables está abierto
     const [openDropdown, setOpenDropdown] = useState<DropdownType>(null);
+    const { user, logoutState } = useAuth(); // Usamos nuestro contexto!
 
     // useRef crea un objeto mutable { current: null }. En React, se usa junto con la propiedad "ref" en un elemento JSX 
     // para decirle "captura el nodo HTML de verdad (ej. un div o un nav) y guárdalo aquí".
@@ -65,21 +97,58 @@ export const Navbar = ({ activeTab, onTabChange }: NavbarProps) => {
         <header className="navbar-header">
             <div className="navbar-container">
                 <div className="navbar-brand">
-                    <span className="brand-logo">📦</span>
+                    <Box className="brand-logo" size={24} style={{ color: 'white', marginRight: '6px' }} />
                     <span className="brand-text">ControlStock</span>
                 </div>
 
                 <nav className="navbar-nav" style={{ gap: '0.5rem' }} ref={navRef}>
+                    {/* DASHBOARD PRINCIPAL (Botón Directo) */}
+                    {user?.role !== 'VENDEDOR' && (
+                        <button
+                            className={`nav-btn ${activeTab === 'dashboard' ? 'active' : ''} `}
+                            onClick={() => handleSelect('dashboard')}
+                            style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+                        >
+                            <LayoutDashboard size={16} />
+                            Vista Global
+                        </button>
+                    )}
+
+                    {/* VENTAS (Punto de Venta) */}
+                    {user?.role !== 'ALMACENISTA' && (
+                        <button
+                            className={`nav-btn ${activeTab === 'sale' ? 'active' : ''} `}
+                            onClick={() => handleSelect('sale')}
+                            style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+                        >
+                            <ShoppingCart size={16} />
+                            Punto de Venta
+                        </button>
+                    )}
+
+                    {/* COMPRAS */}
+                    {user?.role !== 'VENDEDOR' && (
+                        <button
+                            className={`nav-btn ${activeTab === 'purchase' ? 'active' : ''} `}
+                            onClick={() => handleSelect('purchase')}
+                            style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+                        >
+                            <PackagePlus size={16} />
+                            Ingresar Compras
+                        </button>
+                    )}
+
                     {/* PRODUCTOS DROPDOWN */}
                     <div className="nav-item-dropdown">
                         <button
-                            className={`nav-btn ${openDropdown === 'products' ? 'active' : ''}`}
+                            className={`nav-btn ${openDropdown === 'products' ? 'active' : ''} `}
                             onClick={() => toggleDropdown('products')}
                             aria-expanded={openDropdown === 'products'}
                         >
+                            <Box size={16} style={{ marginRight: '0.4rem' }} />
                             Productos
                             <svg
-                                className={`dropdown-icon ${openDropdown === 'products' ? 'open' : ''}`}
+                                className={`dropdown-icon ${openDropdown === 'products' ? 'open' : ''} `}
                                 width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                             >
                                 <path d="m6 9 6 6 6-6" />
@@ -92,97 +161,120 @@ export const Navbar = ({ activeTab, onTabChange }: NavbarProps) => {
                                     className={`dropdown-item ${activeTab === 'list' ? 'selected' : ''}`}
                                     onClick={() => handleSelect('list')}
                                 >
-                                    <span className="icon">📋</span> Inventario
+                                    <span className="icon"><Box size={16} /></span> Inventario
                                 </button>
-                                <button
-                                    className={`dropdown-item ${activeTab === 'create' ? 'selected' : ''}`}
-                                    onClick={() => handleSelect('create')}
-                                >
-                                    <span className="icon">➕</span> Nuevo Producto
-                                </button>
-                            </div>
-                        )}
-                    </div>
 
-                    {/* MOVIMIENTOS DROPDOWN */}
-                    <div className="nav-item-dropdown">
-                        <button
-                            className={`nav-btn ${openDropdown === 'movements' ? 'active' : ''}`}
-                            onClick={() => toggleDropdown('movements')}
-                            aria-expanded={openDropdown === 'movements'}
-                        >
-                            Movimientos
-                            <svg
-                                className={`dropdown-icon ${openDropdown === 'movements' ? 'open' : ''}`}
-                                width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                            >
-                                <path d="m6 9 6 6 6-6" />
-                            </svg>
-                        </button>
-
-                        {openDropdown === 'movements' && (
-                            <div className="dropdown-menu">
-                                <button
-                                    className={`dropdown-item ${activeTab === 'movement' ? 'selected' : ''}`}
-                                    onClick={() => handleSelect('movement')}
-                                >
-                                    <span className="icon">📦</span> Registrar Movimiento
-                                </button>
-                                <button
-                                    className={`dropdown-item ${activeTab === 'movements-list' ? 'selected' : ''}`}
-                                    onClick={() => handleSelect('movements-list')}
-                                >
-                                    <span className="icon">📅</span> Historial Movimientos
-                                </button>
+                                {/* Ocultamos las opciones de creación y ajustes para VENDEDOR */}
+                                {user?.role !== 'VENDEDOR' && (
+                                    <>
+                                        <button
+                                            className={`dropdown-item ${activeTab === 'supplier' ? 'selected' : ''} `}
+                                            onClick={() => handleSelect('supplier')}
+                                        >
+                                            <span className="icon"><Building2 size={16} /></span> Registrar Proveedor
+                                        </button>
+                                        <button
+                                            className={`dropdown-item ${activeTab === 'create' ? 'selected' : ''} `}
+                                            onClick={() => handleSelect('create')}
+                                        >
+                                            <span className="icon"><PlusCircle size={16} /></span> Nuevo Producto
+                                        </button>
+                                        <button
+                                            className={`dropdown-item ${activeTab === 'movement' ? 'selected' : ''} `}
+                                            onClick={() => handleSelect('movement')}
+                                        >
+                                            <span className="icon"><Wrench size={16} /></span> Ajuste Rápido (Merma)
+                                        </button>
+                                    </>
+                                )}
                             </div>
                         )}
                     </div>
 
                     {/* REPORTES DROPDOWN */}
-                    <div className="nav-item-dropdown">
-                        <button
-                            className={`nav-btn ${openDropdown === 'reports' ? 'active' : ''}`}
-                            onClick={() => toggleDropdown('reports')}
-                            aria-expanded={openDropdown === 'reports'}
-                        >
-                            Reportes
-                            <svg
-                                className={`dropdown-icon ${openDropdown === 'reports' ? 'open' : ''}`}
-                                width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                    {user?.role !== 'VENDEDOR' && (
+                        <div className="nav-item-dropdown">
+                            <button
+                                className={`nav-btn ${openDropdown === 'reports' ? 'active' : ''} `}
+                                onClick={() => toggleDropdown('reports')}
+                                aria-expanded={openDropdown === 'reports'}
                             >
-                                <path d="m6 9 6 6 6-6" />
-                            </svg>
-                        </button>
+                                <History size={16} style={{ marginRight: '0.4rem' }} />
+                                Reportes
+                                <svg
+                                    className={`dropdown-icon ${openDropdown === 'reports' ? 'open' : ''} `}
+                                    width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                                >
+                                    <path d="m6 9 6 6 6-6" />
+                                </svg>
+                            </button>
 
-                        {openDropdown === 'reports' && (
-                            <div className="dropdown-menu">
-                                <button
-                                    className={`dropdown-item ${activeTab === 'low-stock-reports' ? 'selected' : ''}`}
-                                    onClick={() => handleSelect('low-stock-reports')}
-                                >
-                                    <span className="icon">📉</span> Bajo Stock
-                                </button>
-                                <button
-                                    className={`dropdown-item ${activeTab === 'movement-history-reports' ? 'selected' : ''}`}
-                                    onClick={() => handleSelect('movement-history-reports')}
-                                >
-                                    <span className="icon">📊</span> Movimientos
-                                </button>
-                                <button
-                                    className={`dropdown-item ${activeTab === 'inventory-valuation-reports' ? 'selected' : ''}`}
-                                    onClick={() => handleSelect('inventory-valuation-reports')}
-                                >
-                                    <span className="icon">💰</span> Valoración
-                                </button>
-                                <button
-                                    className={`dropdown-item ${activeTab === 'product-performance-reports' ? 'selected' : ''}`}
-                                    onClick={() => handleSelect('product-performance-reports')}
-                                >
-                                    <span className="icon">🚀</span> Desempeño
-                                </button>
-                            </div>
-                        )}
-                    </div>
+                            {openDropdown === 'reports' && (
+                                <div className="dropdown-menu">
+                                    <button
+                                        className={`dropdown-item ${activeTab === 'low-stock-reports' ? 'selected' : ''} `}
+                                        onClick={() => handleSelect('low-stock-reports')}
+                                    >
+                                        <span className="icon"><TrendingDown size={16} /></span> Bajo Stock
+                                    </button>
+                                    <button
+                                        className={`dropdown-item ${activeTab === 'movement-history-reports' ? 'selected' : ''} `}
+                                        onClick={() => handleSelect('movement-history-reports')}
+                                    >
+                                        <span className="icon"><History size={16} /></span> Movimientos
+                                    </button>
+
+                                    {/* Reportes Financieros: SOLO ADMIN */}
+                                    {user?.role === 'ADMIN' && (
+                                        <>
+                                            <button
+                                                className={`dropdown-item ${activeTab === 'inventory-valuation-reports' ? 'selected' : ''} `}
+                                                onClick={() => handleSelect('inventory-valuation-reports')}
+                                            >
+                                                <span className="icon"><CircleDollarSign size={16} /></span> Valoración
+                                            </button>
+                                            <button
+                                                className={`dropdown-item ${activeTab === 'product-performance-reports' ? 'selected' : ''} `}
+                                                onClick={() => handleSelect('product-performance-reports')}
+                                            >
+                                                <span className="icon"><TrendingUp size={16} /></span> Desempeño
+                                            </button>
+                                            <button
+                                                className={`dropdown-item ${activeTab === 'net-profit-reports' ? 'selected' : ''} `}
+                                                onClick={() => handleSelect('net-profit-reports')}
+                                            >
+                                                <span className="icon"><Wallet size={16} /></span> Ganancia Neta
+                                            </button>
+                                        </>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* USUARIOS (SOLO ADMIN) */}
+                    {user?.role === 'ADMIN' && (
+                        <button
+                            className={`nav-btn ${activeTab === 'create-user' ? 'active' : ''} `}
+                            onClick={() => handleSelect('create-user')}
+                            style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}
+                        >
+                            <Users size={16} />
+                            Usuarios
+                        </button>
+                    )}
+
+                    {/* BOTON DE CERRAR SESION */}
+                    <div style={{ flexGrow: 1 }} /> {/* Espaciador para mandar el boton al final */}
+                    <button
+                        className="nav-btn"
+                        onClick={logoutState}
+                        style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#fca5a5' }}
+                        title="Cerrar Sesión"
+                    >
+                        <LogOut size={16} />
+                        {user?.name}
+                    </button>
                 </nav>
             </div>
         </header>

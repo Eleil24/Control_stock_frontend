@@ -6,5 +6,6 @@ export * from './pages/LowStockReportsPage';
 export * from './pages/MovementHistoryReportsPage';
 export * from './pages/InventoryValuationReportsPage';
 export * from './pages/ProductPerformanceReportsPage';
+export * from './pages/NetProfitReportsPage';
 
 export { getProducts } from './api/getProducts';

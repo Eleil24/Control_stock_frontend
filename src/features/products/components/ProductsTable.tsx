@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import {
     useReactTable,
     getCoreRowModel,
@@ -7,7 +7,9 @@ import {
     type PaginationState,
     type OnChangeFn
 } from '@tanstack/react-table';
-import type { Product } from '../types';
+import { Pencil, Check, X } from 'lucide-react';
+import type { Product, UpdateProductDto } from '../types';
+import { updateProduct } from '../api/updateProduct';
 import './ProductsTable.css';
 import './Pagination.css';
 
@@ -17,6 +19,7 @@ interface ProductsTableProps {
     pageCount: number;
     pagination: PaginationState;
     onPaginationChange: OnChangeFn<PaginationState>;
+    onProductUpdated?: () => void;
 }
 
 export const ProductsTable = ({
@@ -24,8 +27,43 @@ export const ProductsTable = ({
     isLoading,
     pageCount,
     pagination,
-    onPaginationChange
+    onPaginationChange,
+    onProductUpdated
 }: ProductsTableProps) => {
+
+    const [editingRowId, setEditingRowId] = useState<number | string | null>(null);
+    const [editFormData, setEditFormData] = useState<UpdateProductDto>({});
+    const [isSaving, setIsSaving] = useState(false);
+
+    const handleEditClick = (product: Product) => {
+        setEditingRowId(product.id);
+        setEditFormData({
+            name: product.name,
+            description: product.description,
+            price: product.price
+        });
+    };
+
+    const handleCancelEdit = () => {
+        setEditingRowId(null);
+        setEditFormData({});
+    };
+
+    const handleSaveEdit = async (id: number | string) => {
+        setIsSaving(true);
+        try {
+            await updateProduct(id, editFormData);
+            setEditingRowId(null);
+            if (onProductUpdated) {
+                onProductUpdated();
+            }
+        } catch (error) {
+            console.error('Failed to update product', error);
+            alert('Error al actualizar el producto');
+        } finally {
+            setIsSaving(false);
+        }
+    };
 
     const getStockStatus = (stock: number) => {
         if (stock === 0) return { label: 'Agotado', className: 'stock-out' };
@@ -43,7 +81,49 @@ export const ProductsTable = ({
             {
                 accessorKey: 'name',
                 header: 'Producto',
-                cell: (info) => <span className="product-name">{info.getValue<string>()}</span>,
+                cell: (info) => {
+                    const product = info.row.original;
+                    if (editingRowId === product.id) {
+                        return (
+                            <input
+                                type="text"
+                                className="edit-input"
+                                value={editFormData.name || ''}
+                                onChange={(e) => setEditFormData({ ...editFormData, name: e.target.value })}
+                                disabled={isSaving}
+                            />
+                        );
+                    }
+                    return <span className="product-name">{info.getValue<string>()}</span>;
+                },
+            },
+            {
+                accessorKey: 'price',
+                header: () => <div className="text-right">Precio</div>,
+                cell: (info) => {
+                    const product = info.row.original;
+                    if (editingRowId === product.id) {
+                        return (
+                            <div className="col-price text-right">
+                                <input
+                                    type="number"
+                                    className="edit-input num-input"
+                                    value={editFormData.price || ''}
+                                    onChange={(e) => setEditFormData({ ...editFormData, price: Number(e.target.value) })}
+                                    disabled={isSaving}
+                                />
+                            </div>
+                        );
+                    }
+                    const price = info.getValue<number>();
+                    return (
+                        <div className="col-price text-right">
+                            <span className="price-number">
+                                ${price.toFixed(2)}
+                            </span>
+                        </div>
+                    );
+                },
             },
             {
                 accessorKey: 'stock',
@@ -72,9 +152,50 @@ export const ProductsTable = ({
                         </span>
                     );
                 }
+            },
+            {
+                id: 'actions',
+                header: 'Acciones',
+                cell: (info) => {
+                    const product = info.row.original;
+                    const isEditing = editingRowId === product.id;
+
+                    if (isEditing) {
+                        return (
+                            <div className="actions-cell">
+                                <button
+                                    onClick={() => handleSaveEdit(product.id)}
+                                    className="action-btn save-btn"
+                                    title="Guardar"
+                                    disabled={isSaving}
+                                >
+                                    <Check size={16} />
+                                </button>
+                                <button
+                                    onClick={handleCancelEdit}
+                                    className="action-btn cancel-btn"
+                                    title="Cancelar"
+                                    disabled={isSaving}
+                                >
+                                    <X size={16} />
+                                </button>
+                            </div>
+                        );
+                    }
+
+                    return (
+                        <button
+                            onClick={() => handleEditClick(product)}
+                            className="action-btn edit-btn"
+                            title="Editar"
+                        >
+                            <Pencil size={16} />
+                        </button>
+                    );
+                }
             }
         ],
-        []
+        [editingRowId, editFormData, isSaving]
     );
 
     const table = useReactTable({

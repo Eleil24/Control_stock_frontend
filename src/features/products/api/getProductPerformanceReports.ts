@@ -1,4 +1,5 @@
 import type { ProductPerformance } from '../types';
+import { api } from '../../../lib/axios';
 
 export interface PaginatedProductPerformance {
     data: ProductPerformance[];
@@ -29,12 +30,10 @@ export const getProductPerformanceReports = async (
         queryParams.append('endDate', endDate);
     }
 
-    const response = await fetch(`http://localhost:3000/reports/performance?${queryParams.toString()}`);
-
-    if (!response.ok) {
+    try {
+        const response = await api.get(`/reports/performance?${queryParams.toString()}`);
+        return response.data;
+    } catch (error) {
         throw new Error('Error al obtener el reporte de desempeño de productos');
     }
-
-    const data = await response.json();
-    return data;
 };

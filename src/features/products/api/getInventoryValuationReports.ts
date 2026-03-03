@@ -1,4 +1,5 @@
 import type { Product } from '../types';
+import { api } from '../../../lib/axios';
 
 export interface PaginatedInventoryValuation {
     data: Product[];
@@ -19,12 +20,10 @@ export const getInventoryValuationReports = async (
         limit: limit.toString(),
     });
 
-    const response = await fetch(`http://localhost:3000/reports/valuation?${queryParams.toString()}`);
-
-    if (!response.ok) {
+    try {
+        const response = await api.get(`/reports/valuation?${queryParams.toString()}`);
+        return response.data;
+    } catch (error) {
         throw new Error('Error al obtener el reporte de valoración de inventario');
     }
-
-    const data = await response.json();
-    return data;
 };

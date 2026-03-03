@@ -10,13 +10,13 @@ export interface PaginatedStockMovements {
     };
 }
 
-export const getStockMovements = async (page: number = 1, limit: number = 10): Promise<PaginatedStockMovements> => {
-    const response = await fetch(`http://localhost:3000/stock?page=${page}&limit=${limit}`);
+import { api } from '../../../lib/axios';
 
-    if (!response.ok) {
+export const getStockMovements = async (page: number = 1, limit: number = 10): Promise<PaginatedStockMovements> => {
+    try {
+        const response = await api.get(`/stock?page=${page}&limit=${limit}`);
+        return response.data;
+    } catch (error) {
         throw new Error('Error al obtener el historial de movimientos');
     }
-
-    const data = await response.json();
-    return data;
 };

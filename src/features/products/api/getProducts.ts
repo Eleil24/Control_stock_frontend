@@ -12,13 +12,13 @@ export interface PaginatedProducts {
 /**
  * Función encargada de obtener la lista paginada de productos desde el backend.
  */
-export const getProducts = async (page: number = 1, limit: number = 10): Promise<PaginatedProducts> => {
-    const response = await fetch(`http://localhost:3000/products?page=${page}&limit=${limit}`);
+import { api } from '../../../lib/axios';
 
-    if (!response.ok) {
+export const getProducts = async (page: number = 1, limit: number = 10): Promise<PaginatedProducts> => {
+    try {
+        const response = await api.get(`/products?page=${page}&limit=${limit}`);
+        return response.data;
+    } catch (error) {
         throw new Error('No se pudo obtener la lista de productos');
     }
-
-    const data = await response.json();
-    return data;
 };

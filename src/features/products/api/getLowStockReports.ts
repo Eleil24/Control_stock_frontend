@@ -6,13 +6,13 @@ import type { PaginatedProducts } from './getProducts';
  * @param limit Cantidad de elementos por página
  * @param threshold Límite debajo del cual se considera stock bajo
  */
-export const getLowStockReports = async (page: number = 1, limit: number = 10, threshold: number = 15): Promise<PaginatedProducts> => {
-    const response = await fetch(`http://localhost:3000/reports/low-stock?page=${page}&limit=${limit}&threshold=${threshold}`);
+import { api } from '../../../lib/axios';
 
-    if (!response.ok) {
+export const getLowStockReports = async (page: number = 1, limit: number = 10, threshold: number = 15): Promise<PaginatedProducts> => {
+    try {
+        const response = await api.get(`/reports/low-stock?page=${page}&limit=${limit}&threshold=${threshold}`);
+        return response.data;
+    } catch (error) {
         throw new Error('No se pudo obtener el reporte de bajo stock');
     }
-
-    const data = await response.json();
-    return data;
 };
