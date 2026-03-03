@@ -1,10 +1,14 @@
 import React from 'react';
 import { CreateSupplierForm } from '../components/CreateSupplierForm';
 
-export const CreateSupplierPage: React.FC = () => {
+interface CreateSupplierPageProps {
+    onCancel?: () => void;
+}
+
+export const CreateSupplierPage: React.FC<CreateSupplierPageProps> = ({ onCancel }) => {
     return (
         <div>
-            <CreateSupplierForm />
+            <CreateSupplierForm onCancel={onCancel} />
         </div>
     );
 };

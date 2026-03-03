@@ -8,40 +8,39 @@ import {
     type OnChangeFn
 } from '@tanstack/react-table';
 import { Pencil, Check, X } from 'lucide-react';
-import type { Product, UpdateProductDto } from '../types';
-import { updateProduct } from '../api/updateProduct';
-import './ProductsTable.css';
-import './Pagination.css';
+import type { Supplier } from '../types';
+import { updateSupplier } from '../api/updateSupplier';
+import '../../products/components/ProductsTable.css';
+import '../../products/components/Pagination.css';
 
-interface ProductsTableProps {
-    products: Product[];
+interface SuppliersTableProps {
+    suppliers: Supplier[];
     isLoading?: boolean;
     pageCount: number;
     pagination: PaginationState;
     onPaginationChange: OnChangeFn<PaginationState>;
-    onProductUpdated?: () => void;
+    onSupplierUpdated?: () => void;
 }
 
-export const ProductsTable = ({
-    products,
+export const SuppliersTable = ({
+    suppliers,
     isLoading,
     pageCount,
     pagination,
     onPaginationChange,
-    onProductUpdated
-}: ProductsTableProps) => {
+    onSupplierUpdated
+}: SuppliersTableProps) => {
 
-    // Sirve para la edicion de los datos de los productos
     const [editingRowId, setEditingRowId] = useState<number | string | null>(null);
-    const [editFormData, setEditFormData] = useState<UpdateProductDto>({});
+    const [editFormData, setEditFormData] = useState<{ name?: string; phone?: string; email?: string }>({});
     const [isSaving, setIsSaving] = useState(false);
 
-    const handleEditClick = (product: Product) => {
-        setEditingRowId(product.id);
+    const handleEditClick = (supplier: Supplier) => {
+        setEditingRowId(supplier.id);
         setEditFormData({
-            name: product.name,
-            description: product.description,
-            price: product.price
+            name: supplier.name,
+            phone: supplier.phone || '',
+            email: supplier.email || ''
         });
     };
 
@@ -51,28 +50,31 @@ export const ProductsTable = ({
     };
 
     const handleSaveEdit = async (id: number | string) => {
+        if (!editFormData.name?.trim()) {
+            alert('El nombre del proveedor es obligatorio');
+            return;
+        }
+
         setIsSaving(true);
         try {
-            await updateProduct(id, editFormData);
+            await updateSupplier(Number(id), {
+                name: editFormData.name,
+                phone: editFormData.phone,
+                email: editFormData.email
+            });
             setEditingRowId(null);
-            if (onProductUpdated) {
-                onProductUpdated();
+            if (onSupplierUpdated) {
+                onSupplierUpdated();
             }
         } catch (error) {
-            console.error('Failed to update product', error);
-            alert('Error al actualizar el producto');
+            console.error('Failed to update supplier', error);
+            alert('Error al actualizar el proveedor');
         } finally {
             setIsSaving(false);
         }
     };
 
-    const getStockStatus = (stock: number) => {
-        if (stock === 0) return { label: 'Agotado', className: 'stock-out' };
-        if (stock <= 10) return { label: 'Stock Bajo', className: 'stock-low' };
-        return { label: 'En Stock', className: 'stock-ok' };
-    };
-
-    const columns = useMemo<ColumnDef<Product>[]>(
+    const columns = useMemo<ColumnDef<Supplier>[]>(
         () => [
             {
                 accessorKey: 'id',
@@ -81,11 +83,11 @@ export const ProductsTable = ({
             },
             {
                 accessorKey: 'name',
-                header: 'Producto',
+                header: 'Proveedor',
                 cell: (info) => {
-                    const product = info.row.original;
+                    const supplier = info.row.original;
                     const meta = info.table.options.meta as any;
-                    if (meta.editingRowId === product.id) {
+                    if (meta.editingRowId === supplier.id) {
                         return (
                             <input
                                 type="text"
@@ -100,75 +102,64 @@ export const ProductsTable = ({
                 },
             },
             {
-                accessorKey: 'price',
-                header: () => <div className="text-right">Precio</div>,
+                accessorKey: 'phone',
+                header: 'Teléfono',
                 cell: (info) => {
-                    const product = info.row.original;
+                    const supplier = info.row.original;
                     const meta = info.table.options.meta as any;
-                    if (meta.editingRowId === product.id) {
+                    if (meta.editingRowId === supplier.id) {
                         return (
-                            <div className="col-price text-right">
-                                <input
-                                    type="number"
-                                    className="edit-input num-input"
-                                    value={meta.editFormData.price || ''}
-                                    onChange={(e) => meta.setEditFormData({ ...meta.editFormData, price: Number(e.target.value) })}
-                                    disabled={meta.isSaving}
-                                />
-                            </div>
+                            <input
+                                type="text"
+                                className="edit-input"
+                                value={meta.editFormData.phone || ''}
+                                onChange={(e) => meta.setEditFormData({ ...meta.editFormData, phone: e.target.value })}
+                                disabled={meta.isSaving}
+                            />
                         );
                     }
-                    const price = info.getValue<number>();
-                    return (
-                        <div className="col-price text-right">
-                            <span className="price-number">
-                                ${price.toFixed(2)}
-                            </span>
-                        </div>
-                    );
+                    return <span>{info.getValue<string>()}</span>;
                 },
             },
             {
-                accessorKey: 'stock',
-                header: () => <div className="text-right">Stock</div>,
+                accessorKey: 'email',
+                header: 'Email',
                 cell: (info) => {
-                    const stock = info.getValue<number>();
-                    const status = getStockStatus(stock);
-                    return (
-                        <div className="col-stock text-right">
-                            <span className={`stock-number ${status.className}-text`}>
-                                {stock}
-                            </span>
-                        </div>
-                    );
+                    const supplier = info.row.original;
+                    const meta = info.table.options.meta as any;
+                    if (meta.editingRowId === supplier.id) {
+                        return (
+                            <input
+                                type="text"
+                                className="edit-input"
+                                value={meta.editFormData.email || ''}
+                                onChange={(e) => meta.setEditFormData({ ...meta.editFormData, email: e.target.value })}
+                                disabled={meta.isSaving}
+                            />
+                        );
+                    }
+                    return <span>{info.getValue<string>()}</span>;
                 },
             },
             {
-                id: 'status',
-                header: 'Estado',
-                cell: (info) => {
-                    const stock = info.row.original.stock;
-                    const status = getStockStatus(stock);
-                    return (
-                        <span className={`status-badge ${status.className}`}>
-                            {status.label}
-                        </span>
-                    );
-                }
+                accessorFn: (row) => new Date(row.createdAt).toLocaleDateString(),
+                id: 'createdAt',
+                header: 'Fecha Registro',
+                cell: (info) => <span>{info.getValue<string>()}</span>,
             },
             {
                 id: 'actions',
                 header: 'Acciones',
                 cell: (info) => {
-                    const product = info.row.original;
+                    const supplier = info.row.original;
                     const meta = info.table.options.meta as any;
-                    const isEditing = meta.editingRowId === product.id;
+                    const isEditing = meta.editingRowId === supplier.id;
 
                     if (isEditing) {
                         return (
                             <div className="actions-cell">
                                 <button
-                                    onClick={() => meta.handleSaveEdit(product.id)}
+                                    onClick={() => meta.handleSaveEdit(supplier.id)}
                                     className="action-btn save-btn"
                                     title="Guardar"
                                     disabled={meta.isSaving}
@@ -189,7 +180,7 @@ export const ProductsTable = ({
 
                     return (
                         <button
-                            onClick={() => meta.handleEditClick(product)}
+                            onClick={() => meta.handleEditClick(supplier)}
                             className="action-btn edit-btn"
                             title="Editar"
                         >
@@ -203,7 +194,7 @@ export const ProductsTable = ({
     );
 
     const table = useReactTable({
-        data: products,
+        data: suppliers,
         columns,
         pageCount,
         state: {
@@ -223,7 +214,7 @@ export const ProductsTable = ({
         }
     });
 
-    if (isLoading && !products.length) {
+    if (isLoading && !suppliers.length) {
         return (
             <div className="products-table-skeleton">
                 <div className="skeleton-row"></div>
@@ -233,10 +224,10 @@ export const ProductsTable = ({
         );
     }
 
-    if (!isLoading && !products.length) {
+    if (!isLoading && !suppliers.length) {
         return (
             <div className="products-empty-state">
-                <p>No hay productos disponibles.</p>
+                <p>No hay proveedores registrados.</p>
             </div>
         );
     }

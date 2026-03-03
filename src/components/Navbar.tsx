@@ -34,6 +34,7 @@ export type TabType =
     | 'net-profit-reports'
     | 'sale'
     | 'supplier'
+    | 'create-supplier'
     | 'purchase'
     | 'create-user';
 type DropdownType = 'products' | 'movements' | 'reports' | 'sales' | null;
@@ -171,7 +172,7 @@ export const Navbar = ({ activeTab, onTabChange }: NavbarProps) => {
                                             className={`dropdown-item ${activeTab === 'supplier' ? 'selected' : ''} `}
                                             onClick={() => handleSelect('supplier')}
                                         >
-                                            <span className="icon"><Building2 size={16} /></span> Registrar Proveedor
+                                            <span className="icon"><Building2 size={16} /></span> Proveedores
                                         </button>
                                         <button
                                             className={`dropdown-item ${activeTab === 'create' ? 'selected' : ''} `}

@@ -6,6 +6,15 @@ export interface Supplier {
     createdAt: string;
 }
 
+export interface PaginatedSuppliers {
+    data: Supplier[];
+    meta: {
+        total: number;
+        page: number;
+        lastPage: number;
+    };
+}
+
 export interface CreateSupplierDto {
     name: string;
     phone: string;

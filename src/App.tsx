@@ -9,6 +9,7 @@ import { CreateMovementPage } from './features/products/pages/CreateMovementPage
 import { StockMovementsListPage } from './features/products/pages/StockMovementsListPage';
 import { CreateSalePage } from './features/sales/pages/CreateSalePage';
 import { CreateSupplierPage } from './features/suppliers/pages/CreateSupplierPage';
+import { SuppliersListPage } from './features/suppliers/pages/SuppliersListPage';
 import { CreatePurchasePage } from './features/purchases/pages/CreatePurchasePage';
 import { CreateUserPage } from './features/users/pages/CreateUserPage';
 
@@ -25,7 +26,7 @@ import './App.css';
 // Componente interno para poder usar el hook useAuth
 const AppContent = () => {
   // Estado para controlar qué pantalla se está viendo. ¡Arrancamos en 'dashboard' por defecto!
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'list' | 'create' | 'movement' | 'movements-list' | 'low-stock-reports' | 'movement-history-reports' | 'inventory-valuation-reports' | 'product-performance-reports' | 'net-profit-reports' | 'sale' | 'supplier' | 'purchase' | 'create-user'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'list' | 'create' | 'movement' | 'movements-list' | 'low-stock-reports' | 'movement-history-reports' | 'inventory-valuation-reports' | 'product-performance-reports' | 'net-profit-reports' | 'sale' | 'supplier' | 'create-supplier' | 'purchase' | 'create-user'>('dashboard');
   const { user } = useAuth();
 
   // Efecto para redirigir a los vendedores fuera del dashboard
@@ -79,8 +80,9 @@ const AppContent = () => {
           </ProtectedRoute>
         )}
 
-        {/* Ruta Proveedores */}
-        {activeTab === 'supplier' && <CreateSupplierPage />}
+        {/* Rutas Proveedores */}
+        {activeTab === 'supplier' && <SuppliersListPage onCreateNew={() => setActiveTab('create-supplier')} />}
+        {activeTab === 'create-supplier' && <CreateSupplierPage onCancel={() => setActiveTab('supplier')} />}
 
         {/* Ruta compras exclusiva para ADMIN y ALMACENISTA */}
         {activeTab === 'purchase' && (

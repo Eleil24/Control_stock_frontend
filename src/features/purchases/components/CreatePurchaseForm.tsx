@@ -36,11 +36,11 @@ export const CreatePurchaseForm: React.FC = () => {
             // Promise.all to fetch both lists simultaneously
             const [productsRes, suppliersRes] = await Promise.all([
                 getProducts(1, 100), // Get large catalog
-                getSuppliers()       // Get all suppliers
+                getSuppliers(1, 100)       // Get all suppliers using pagination args to get a big block
             ]);
 
             setProducts(productsRes.data);
-            setSuppliers(suppliersRes);
+            setSuppliers(suppliersRes.data);
         } catch (err) {
             console.error('Error fetching initial data:', err);
             alert('Error al cargar datos del servidor.');

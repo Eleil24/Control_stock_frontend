@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { useCreateSupplier } from '../hooks/useCreateSupplier';
 import './CreateSupplierForm.css';
 
-export const CreateSupplierForm: React.FC = () => {
+interface CreateSupplierFormProps {
+    onCancel?: () => void;
+}
+
+export const CreateSupplierForm: React.FC<CreateSupplierFormProps> = ({ onCancel }) => {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
@@ -89,6 +93,16 @@ export const CreateSupplierForm: React.FC = () => {
                         >
                             {isLoading ? 'Guardando...' : 'Guardar Proveedor'}
                         </button>
+                        {onCancel && (
+                            <button
+                                type="button"
+                                className="btn-cancel-supplier"
+                                onClick={onCancel}
+                                disabled={isLoading}
+                            >
+                                Cancelar y Volver
+                            </button>
+                        )}
                     </div>
                 </form>
             </div>
