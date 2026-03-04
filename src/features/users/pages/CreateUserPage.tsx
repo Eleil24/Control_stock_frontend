@@ -3,7 +3,11 @@ import { UserPlus, Save, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { createUser } from '../api/createUser';
 import './CreateUserPage.css';
 
-export const CreateUserPage = () => {
+interface CreateUserPageProps {
+    onCancel?: () => void;
+}
+
+export const CreateUserPage = ({ onCancel }: CreateUserPageProps) => {
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -144,6 +148,16 @@ export const CreateUserPage = () => {
                         >
                             Limpiar Formularios
                         </button>
+                        {onCancel && (
+                            <button
+                                type="button"
+                                className="btn btn-secondary"
+                                onClick={onCancel}
+                                disabled={isLoading}
+                            >
+                                Cancelar y Volver
+                            </button>
+                        )}
                         <button
                             type="submit"
                             className="btn btn-primary"

@@ -12,6 +12,7 @@ import { CreateSupplierPage } from './features/suppliers/pages/CreateSupplierPag
 import { SuppliersListPage } from './features/suppliers/pages/SuppliersListPage';
 import { CreatePurchasePage } from './features/purchases/pages/CreatePurchasePage';
 import { CreateUserPage } from './features/users/pages/CreateUserPage';
+import { UsersListPage } from './features/users/pages/UsersListPage';
 
 // Importamos la barra de navegación superior.
 import { Navbar } from './components/Navbar';
@@ -26,7 +27,7 @@ import './App.css';
 // Componente interno para poder usar el hook useAuth
 const AppContent = () => {
   // Estado para controlar qué pantalla se está viendo. ¡Arrancamos en 'dashboard' por defecto!
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'list' | 'create' | 'movement' | 'movements-list' | 'low-stock-reports' | 'movement-history-reports' | 'inventory-valuation-reports' | 'product-performance-reports' | 'net-profit-reports' | 'sale' | 'supplier' | 'create-supplier' | 'purchase' | 'create-user'>('dashboard');
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'list' | 'create' | 'movement' | 'movements-list' | 'low-stock-reports' | 'movement-history-reports' | 'inventory-valuation-reports' | 'product-performance-reports' | 'net-profit-reports' | 'sale' | 'supplier' | 'create-supplier' | 'purchase' | 'users' | 'create-user'>('dashboard');
   const { user } = useAuth();
 
   // Efecto para redirigir a los vendedores fuera del dashboard
@@ -91,10 +92,15 @@ const AppContent = () => {
           </ProtectedRoute>
         )}
 
-        {/* Ruta creacion de usuarios exclusiva para ADMIN */}
+        {/* Ruta gestion de usuarios exclusiva para ADMIN */}
+        {activeTab === 'users' && (
+          <ProtectedRoute allowedRoles={['ADMIN']}>
+            <UsersListPage onCreateNew={() => setActiveTab('create-user')} />
+          </ProtectedRoute>
+        )}
         {activeTab === 'create-user' && (
           <ProtectedRoute allowedRoles={['ADMIN']}>
-            <CreateUserPage />
+            <CreateUserPage onCancel={() => setActiveTab('users')} />
           </ProtectedRoute>
         )}
       </main>

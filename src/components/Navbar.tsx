@@ -36,6 +36,7 @@ export type TabType =
     | 'supplier'
     | 'create-supplier'
     | 'purchase'
+    | 'users'
     | 'create-user';
 type DropdownType = 'products' | 'movements' | 'reports' | 'sales' | null;
 
@@ -256,8 +257,8 @@ export const Navbar = ({ activeTab, onTabChange }: NavbarProps) => {
                     {/* USUARIOS (SOLO ADMIN) */}
                     {user?.role === 'ADMIN' && (
                         <button
-                            className={`nav-btn ${activeTab === 'create-user' ? 'active' : ''} `}
-                            onClick={() => handleSelect('create-user')}
+                            className={`nav-btn ${activeTab === 'users' ? 'active' : ''} `}
+                            onClick={() => handleSelect('users')}
                             style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}
                         >
                             <Users size={16} />
