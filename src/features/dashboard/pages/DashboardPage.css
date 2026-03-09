@@ -11,6 +11,7 @@
 
 .dashboard-header {
     margin-bottom: 2.5rem;
+    text-align: center;
 }
 
 .dashboard-title {
@@ -173,8 +174,50 @@
     animation: spinner-border .75s linear infinite;
 }
 
-@keyframes spinner-border {
-    to {
-        transform: rotate(360deg);
+@keyframes spinner-border {}
+
+/* =========================================================
+   MEDIA QUERIES (RESPONSIVE)
+========================================================= */
+@media (max-width: 768px) {
+    .dashboard-page-wrapper {
+        padding: 1rem;
+    }
+
+    .dashboard-title {
+        font-size: 1.5rem;
+    }
+
+    .dashboard-subtitle {
+        font-size: 0.95rem;
+    }
+
+    .kpi-grid {
+        grid-template-columns: 1fr;
+        /* Una columna en celulares pequeños */
+        gap: 1rem;
+    }
+
+    .kpi-card {
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .kpi-icon {
+        font-size: 2rem;
+        padding: 0.75rem;
+    }
+
+    .chart-card {
+        padding: 1rem;
+    }
+
+    .chart-title {
+        font-size: 1.1rem;
+    }
+
+    .chart-container {
+        /* En celulares el canvas del grafico también necesita ajustarse */
+        height: 250px;
     }
 }

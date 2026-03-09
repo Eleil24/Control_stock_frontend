@@ -37,7 +37,7 @@ export const UsersListPage = ({ onCreateNew }: { onCreateNew: () => void }) => {
     return (
         <div className="products-page">
             <div className="products-page-header">
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%', textAlign: 'left' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', width: '100%' }}>
                     <div>
                         <h1 className="products-title">Usuarios</h1>
                         <p className="products-subtitle">

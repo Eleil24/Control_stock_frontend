@@ -2,26 +2,26 @@
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
-    animation: fadeIn 0.4s ease-out forwards;
+    animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .products-page-header {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    text-align: center;
+    text-align: left;
     margin-bottom: 2.5rem;
 }
 
 .products-title {
-    font-size: 2.5rem;
-    font-weight: 700;
+    font-size: 2.75rem;
+    font-weight: 800;
     margin: 0 0 0.5rem 0;
-    background: linear-gradient(135deg, #fff 0%, #a1a1aa 100%);
+    background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.03em;
 }
 
 .products-subtitle {
@@ -39,10 +39,10 @@
     margin-top: 2rem;
 }
 
-@keyframes fadeIn {
+@keyframes slideUpFade {
     from {
         opacity: 0;
-        transform: translateY(10px);
+        transform: translateY(20px);
     }
 
     to {

@@ -16,7 +16,9 @@ import {
     TrendingUp,
     Wallet,
     LogOut,
-    Users
+    Users,
+    Menu,
+    X
 } from 'lucide-react';
 import { useAuth } from '../features/auth/context/AuthContext';
 import './Navbar.css';
@@ -50,6 +52,8 @@ interface NavbarProps {
 export const Navbar = ({ activeTab, onTabChange }: NavbarProps) => {
     // Estado para saber cuál de los menús desplegables está abierto
     const [openDropdown, setOpenDropdown] = useState<DropdownType>(null);
+    // Estado para saber si el menú de móvil está abierto
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const { user, logoutState } = useAuth(); // Usamos nuestro contexto!
 
     // useRef crea un objeto mutable { current: null }. En React, se usa junto con la propiedad "ref" en un elemento JSX 
@@ -68,6 +72,7 @@ export const Navbar = ({ activeTab, onTabChange }: NavbarProps) => {
     const handleSelect = (tab: TabType) => {
         onTabChange(tab);       // Ejecuta la función que vino desde App.tsx cambiar de pantalla.
         setOpenDropdown(null);  // Al elegir algo, cerramos automáticamente los menús desplegables (poniendo "null").
+        setIsMobileMenuOpen(false); // También cerramos el menú móvil.
     };
 
     // EFECTO DE CERRAR EL MENÚ CON UN CLIC AFUERA (Close dropdown when clicking outside)
@@ -81,6 +86,7 @@ export const Navbar = ({ activeTab, onTabChange }: NavbarProps) => {
             // Entonces, Si (nav no es nulo) Y (El click NO ocurrió dentro del nav) -> cerramos el menú.
             if (navRef.current && !navRef.current.contains(event.target as Node)) {
                 setOpenDropdown(null);
+                setIsMobileMenuOpen(false); // Cierra el menú móvil al hacer clic fuera
             }
         };
 
@@ -103,7 +109,17 @@ export const Navbar = ({ activeTab, onTabChange }: NavbarProps) => {
                     <span className="brand-text">ControlStock</span>
                 </div>
 
-                <nav className="navbar-nav" style={{ gap: '0.5rem' }} ref={navRef}>
+                {/* BOTÓN HAMBURGUESA PARA MÓVILES */}
+                <button
+                    className="mobile-menu-btn"
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    aria-label="Toggle Navigation"
+                >
+                    {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                </button>
+
+                {/* QUITAR STYLE={{GAP}} DEL JSX, LO MANDAMOS A CSS */}
+                <nav className={`navbar-nav ${isMobileMenuOpen ? 'mobile-open' : ''}`} ref={navRef}>
                     {/* DASHBOARD PRINCIPAL (Botón Directo) */}
                     {user?.role !== 'VENDEDOR' && (
                         <button
