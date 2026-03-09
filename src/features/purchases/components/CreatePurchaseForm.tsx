@@ -5,40 +5,27 @@ import { getSuppliers } from '../../suppliers/api/getSuppliers';
 import type { Product } from '../../products/types';
 import type { Supplier } from '../../suppliers/types';
 import './CreatePurchaseForm.css';
-
 interface CartItem {
     product: Product;
     quantity: number;
     unitCost: number;
 }
-
 export const CreatePurchaseForm: React.FC = () => {
-    // ---- Data State ----
     const [products, setProducts] = useState<Product[]>([]);
     const [suppliers, setSuppliers] = useState<Supplier[]>([]);
     const [isLoadingInitialData, setIsLoadingInitialData] = useState(true);
-
-    // ---- UI State ----
     const [searchTerm, setSearchTerm] = useState('');
-
-    // ---- Form / Cart State ----
     const [invoiceNumber, setInvoiceNumber] = useState('');
     const [supplierId, setSupplierId] = useState<number | ''>('');
     const [cart, setCart] = useState<CartItem[]>([]);
-
-    // Hook to handle submission to backend
     const { mutate, isLoading: isSubmitting, isError, error } = useCreatePurchase();
-
-    // ---- Fetch Initial Data ----
     const fetchInitialData = async () => {
         setIsLoadingInitialData(true);
         try {
-            // Promise.all to fetch both lists simultaneously
             const [productsRes, suppliersRes] = await Promise.all([
-                getProducts(1, 100), // Get large catalog
-                getSuppliers(1, 100)       // Get all suppliers using pagination args to get a big block
+                getProducts(1, 100), 
+                getSuppliers(1, 100)       
             ]);
-
             setProducts(productsRes.data);
             setSuppliers(suppliersRes.data);
         } catch (err) {
@@ -48,35 +35,27 @@ export const CreatePurchaseForm: React.FC = () => {
             setIsLoadingInitialData(false);
         }
     };
-
     useEffect(() => {
         fetchInitialData();
     }, []);
-
-    // ---- Cart Functions ----
     const addToCart = (product: Product) => {
         setCart(prevCart => {
             const existingItem = prevCart.find(item => item.product.id === product.id);
             if (existingItem) {
-                // If it already exists in the purchase order, just increment quantity by 1 for convenience
                 return prevCart.map(item =>
                     item.product.id === product.id
                         ? { ...item, quantity: item.quantity + 1 }
                         : item
                 );
             }
-            // If new to cart, add with default quantity 1 and the current price as a fallback unitCost
             return [...prevCart, { product, quantity: 1, unitCost: product.price }];
         });
     };
-
     const removeFromCart = (productId: string | number) => {
         setCart(prevCart => prevCart.filter(item => item.product.id !== productId));
     };
-
     const updateQuantity = (productId: string | number, newQuantity: number) => {
         if (isNaN(newQuantity) || newQuantity <= 0) return;
-
         setCart(prevCart =>
             prevCart.map(item =>
                 item.product.id === productId
@@ -85,10 +64,8 @@ export const CreatePurchaseForm: React.FC = () => {
             )
         );
     };
-
     const updateUnitCost = (productId: string | number, newCost: number) => {
         if (isNaN(newCost) || newCost < 0) return;
-
         setCart(prevCart =>
             prevCart.map(item =>
                 item.product.id === productId
@@ -97,18 +74,12 @@ export const CreatePurchaseForm: React.FC = () => {
             )
         );
     };
-
-    // ---- Calculations ----
     const calculateTotal = () => {
         return cart.reduce((acc, item) => acc + (item.unitCost * item.quantity), 0);
     };
-
-    // ---- Filters ----
     const filteredProducts = products.filter(product =>
         product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
-    // ---- Handlers ----
     const handleSubmit = async () => {
         if (cart.length === 0) {
             alert("Debe agregar al menos un producto a la compra.");
@@ -122,8 +93,6 @@ export const CreatePurchaseForm: React.FC = () => {
             alert("Por favor selecciona un Proveedor.");
             return;
         }
-
-        // Map the cart to match the `{ invoiceNumber, supplierId, details }` structure
         const purchaseData = {
             invoiceNumber: invoiceNumber,
             supplierId: Number(supplierId),
@@ -133,24 +102,20 @@ export const CreatePurchaseForm: React.FC = () => {
                 unitCost: item.unitCost
             }))
         };
-
         try {
             await mutate(purchaseData);
             setCart([]);
             setInvoiceNumber('');
             setSupplierId('');
             alert("¡Compra ingresada con éxito! El inventario ha sido actualizado.");
-
-            // Reload products to show new stock
             fetchInitialData();
         } catch (e) {
             console.error(e);
         }
     };
-
     return (
         <div className="pos-container">
-            {/* LEFT COLUMN: Product Catalog (Reusing POS CSS for layout) */}
+            {}
             <div className="pos-left-column">
                 <div className="pos-header">
                     <h2>Catálogo para Comprar</h2>
@@ -162,7 +127,6 @@ export const CreatePurchaseForm: React.FC = () => {
                         className="pos-search-input"
                     />
                 </div>
-
                 <div className="pos-products-grid">
                     {isLoadingInitialData ? (
                         <p>Cargando catálogo...</p>
@@ -185,12 +149,10 @@ export const CreatePurchaseForm: React.FC = () => {
                     )}
                 </div>
             </div>
-
-            {/* RIGHT COLUMN: The Purchase Details Form */}
+            {}
             <div className="pos-right-column purchase-form">
                 <div className="boleta-header">
                     <h2>Detalles de Ingreso (Compra)</h2>
-
                     <div className="form-group">
                         <label>Proveedor:</label>
                         <select
@@ -206,7 +168,6 @@ export const CreatePurchaseForm: React.FC = () => {
                             ))}
                         </select>
                     </div>
-
                     <div className="form-group" style={{ marginTop: '12px' }}>
                         <label>No. de Factura / Boleta:</label>
                         <input
@@ -218,7 +179,6 @@ export const CreatePurchaseForm: React.FC = () => {
                         />
                     </div>
                 </div>
-
                 <div className="boleta-items-container">
                     {cart.length === 0 ? (
                         <p className="empty-cart-message">No ha agregado productos para ingresar.</p>
@@ -237,8 +197,7 @@ export const CreatePurchaseForm: React.FC = () => {
                                 {cart.map(item => (
                                     <tr key={item.product.id}>
                                         <td className="item-name">{item.product.name}</td>
-
-                                        {/* QUANTITY INPUT */}
+                                        {}
                                         <td>
                                             <input
                                                 type="number"
@@ -264,8 +223,7 @@ export const CreatePurchaseForm: React.FC = () => {
                                                 className="quantity-input"
                                             />
                                         </td>
-
-                                        {/* UNIT COST INPUT */}
+                                        {}
                                         <td>
                                             <div className="cost-input-wrapper">
                                                 <span className="currency-symbol">$</span>
@@ -295,7 +253,6 @@ export const CreatePurchaseForm: React.FC = () => {
                                                 />
                                             </div>
                                         </td>
-
                                         <td className="item-subtotal">
                                             ${(item.unitCost * item.quantity).toFixed(2)}
                                         </td>
@@ -314,15 +271,12 @@ export const CreatePurchaseForm: React.FC = () => {
                         </table>
                     )}
                 </div>
-
                 <div className="boleta-footer">
                     <div className="total-section">
                         <span>TOTAL COMPRA:</span>
                         <span className="total-amount">${calculateTotal().toFixed(2)}</span>
                     </div>
-
                     {isError && <div className="error-message">Error: {error}</div>}
-
                     <button
                         className={`submit-sale-btn purchase-btn ${cart.length === 0 ? 'disabled' : ''}`}
                         onClick={handleSubmit}
@@ -334,4 +288,4 @@ export const CreatePurchaseForm: React.FC = () => {
             </div>
         </div>
     );
-};
+};

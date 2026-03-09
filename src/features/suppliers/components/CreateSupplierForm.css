@@ -4,12 +4,9 @@
     align-items: center;
     padding: 20px;
     height: calc(100vh - 80px);
-    /* Adjust based on navbar height */
     box-sizing: border-box;
     background-color: var(--bg-color);
-    /* Matches dashboard background */
 }
-
 .supplier-form-card {
     background: white;
     border-radius: 12px;
@@ -17,17 +14,14 @@
     width: 100%;
     max-width: 500px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
-    /* Soft, premium shadow */
     border: 1px solid #eaeaea;
 }
-
 .supplier-form-card h2 {
     margin: 0 0 8px 0;
     color: #1a1a1a;
     font-size: 1.5rem;
     text-align: center;
 }
-
 .supplier-form-subtitle {
     color: #666;
     font-size: 0.95rem;
@@ -35,7 +29,6 @@
     margin-bottom: 24px;
     line-height: 1.4;
 }
-
 .supplier-error-alert {
     background-color: #f8d7da;
     color: #721c24;
@@ -46,30 +39,25 @@
     font-size: 0.9rem;
     text-align: center;
 }
-
 .supplier-form {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
-
 .supplier-form .form-group {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
-
 .supplier-form .form-group label {
     font-weight: 500;
     font-size: 0.9rem;
     color: #333;
     text-align: left;
 }
-
 .supplier-form .form-group .required {
     color: #dc3545;
 }
-
 .supplier-form .form-group input {
     width: 100%;
     box-sizing: border-box;
@@ -80,29 +68,23 @@
     transition: border-color 0.2s, box-shadow 0.2s;
     outline: none;
 }
-
 .supplier-form .form-group input:focus {
     border-color: #4a90e2;
-    /* Primary brand color */
     box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
 }
-
 .supplier-form .form-group input:disabled {
     background-color: #f5f5f5;
     cursor: not-allowed;
 }
-
 .form-actions {
     margin-top: 24px;
     display: flex;
     gap: 16px;
 }
-
 .btn-submit-supplier {
     flex: 1;
     padding: 14px;
     background-color: #28a745;
-    /* Success Green */
     color: white;
     border: 1px solid transparent;
     border-radius: 8px;
@@ -111,40 +93,30 @@
     cursor: pointer;
     transition: background-color 0.2s, transform 0.1s;
 }
-
 .btn-cancel-supplier {
     flex: 1;
     padding: 14px;
     background-color: #f3f4f6;
-    /* Light gray */
     color: #4b5563;
-    /* Dark gray text */
     border: 1px solid #d1d5db;
-    /* Border */
     border-radius: 8px;
     font-size: 1.1rem;
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.2s, transform 0.1s;
 }
-
 .btn-submit-supplier:hover:not(:disabled) {
     background-color: #218838;
 }
-
 .btn-cancel-supplier:hover:not(:disabled) {
     background-color: #e5e7eb;
 }
-
 .btn-cancel-supplier:active:not(:disabled) {
     transform: translateY(1px);
 }
-
 .btn-submit-supplier:active:not(:disabled) {
     transform: translateY(1px);
-    /* Click effect */
 }
-
 .btn-submit-supplier:disabled {
     background-color: #a5d8b0;
     cursor: not-allowed;

@@ -2,12 +2,10 @@ export interface SaleDetailDto {
     productId: number;
     quantity: number;
 }
-
 export interface CreateSaleDto {
     customerName: string;
     details: SaleDetailDto[];
 }
-
 export interface SaleDetail {
     id: number;
     saleId: number;
@@ -19,7 +17,6 @@ export interface SaleDetail {
         name: string;
     };
 }
-
 export interface SaleResponse {
     id: number;
     invoiceNumber: string;
@@ -31,4 +28,4 @@ export interface SaleResponse {
     total: number;
     createdAt: string;
     details: SaleDetail[];
-}
+}

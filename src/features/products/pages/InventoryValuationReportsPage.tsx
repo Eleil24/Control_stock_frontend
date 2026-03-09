@@ -5,28 +5,23 @@ import type { Product } from '../types';
 import { InventoryValuationTable } from '../components/InventoryValuationTable';
 import './InventoryValuationReportsPage.css';
 import '../components/InventoryValuationTable.css';
-
 export const InventoryValuationReportsPage: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [pageCount, setPageCount] = useState(0);
-
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10,
     });
-
     useEffect(() => {
         const fetchReports = async () => {
             setIsLoading(true);
             try {
-                // pageIndex is 0-based in react-table, API expects 1-based page
                 const response = await getInventoryValuationReports(
                     pagination.pageIndex + 1,
                     pagination.pageSize
                 );
-
                 setProducts(response.data);
                 setPageCount(response.meta.lastPage);
                 setError(null);
@@ -38,10 +33,8 @@ export const InventoryValuationReportsPage: React.FC = () => {
                 setIsLoading(false);
             }
         };
-
         fetchReports();
     }, [pagination.pageIndex, pagination.pageSize]);
-
     return (
         <div className="valuation-reports-page-wrapper">
             <div className="valuation-reports-page-container">
@@ -53,7 +46,6 @@ export const InventoryValuationReportsPage: React.FC = () => {
                         </p>
                     </div>
                 </div>
-
                 {error ? (
                     <div className="valuation-error">
                         <p>⚠️ {error}</p>
@@ -72,4 +64,4 @@ export const InventoryValuationReportsPage: React.FC = () => {
             </div>
         </div>
     );
-};
+};

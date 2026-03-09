@@ -1,6 +1,5 @@
 import type { CreateSupplierDto, Supplier } from '../types';
 import { api } from '../../../lib/axios';
-
 export const createSupplier = async (data: CreateSupplierDto): Promise<Supplier> => {
     try {
         const response = await api.post('/suppliers', data);
@@ -12,4 +11,4 @@ export const createSupplier = async (data: CreateSupplierDto): Promise<Supplier>
         }
         throw new Error(errorMessage);
     }
-};
+};

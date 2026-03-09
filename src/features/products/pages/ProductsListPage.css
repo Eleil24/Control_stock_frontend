@@ -4,7 +4,6 @@
     margin: 0 auto;
     animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-
 .products-page-header {
     display: flex;
     justify-content: flex-start;
@@ -12,7 +11,6 @@
     text-align: left;
     margin-bottom: 2.5rem;
 }
-
 .products-title {
     font-size: 2.75rem;
     font-weight: 800;
@@ -23,13 +21,11 @@
     -webkit-text-fill-color: transparent;
     letter-spacing: -0.03em;
 }
-
 .products-subtitle {
     color: #a1a1aa;
     margin: 0;
     font-size: 1.1rem;
 }
-
 .products-error {
     background: rgba(239, 68, 68, 0.1);
     border: 1px solid rgba(239, 68, 68, 0.2);
@@ -38,19 +34,16 @@
     border-radius: 12px;
     margin-top: 2rem;
 }
-
 @keyframes slideUpFade {
     from {
         opacity: 0;
         transform: translateY(20px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
-
 @media (prefers-color-scheme: light) {
     .products-title {
         background: linear-gradient(135deg, #111827 0%, #4b5563 100%);
@@ -58,23 +51,19 @@
         background-clip: text;
         -webkit-text-fill-color: transparent;
     }
-
     .products-subtitle {
         color: #6b7280;
     }
-
     .products-error {
         background: #fef2f2;
         border-color: #fca5a5;
         color: #b91c1c;
     }
 }
-
 @media (max-width: 768px) {
     .products-page {
         padding: 1rem;
     }
-
     .products-title {
         font-size: 2rem;
     }

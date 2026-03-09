@@ -4,32 +4,24 @@ import { getProductPerformanceReports } from '../api/getProductPerformanceReport
 import type { ProductPerformance } from '../types';
 import { ProductPerformanceTable } from '../components/ProductPerformanceTable';
 import './ProductPerformanceReportsPage.css';
-
 export const ProductPerformanceReportsPage: React.FC = () => {
     const [performanceData, setPerformanceData] = useState<ProductPerformance[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [pageCount, setPageCount] = useState(0);
-
-    // Filters
     const [startDateFilter, setStartDateFilter] = useState('');
     const [endDateFilter, setEndDateFilter] = useState('');
-
-    // Values to apply when searching
     const [appliedStartDate, setAppliedStartDate] = useState('');
     const [appliedEndDate, setAppliedEndDate] = useState('');
-
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10,
     });
-
     const handleSearch = () => {
         setAppliedStartDate(startDateFilter);
         setAppliedEndDate(endDateFilter);
-        setPagination(prev => ({ ...prev, pageIndex: 0 })); // Reset page to 0
+        setPagination(prev => ({ ...prev, pageIndex: 0 })); 
     };
-
     const handleClearFilters = () => {
         setStartDateFilter('');
         setEndDateFilter('');
@@ -37,19 +29,16 @@ export const ProductPerformanceReportsPage: React.FC = () => {
         setAppliedEndDate('');
         setPagination(prev => ({ ...prev, pageIndex: 0 }));
     };
-
     useEffect(() => {
         const fetchReports = async () => {
             setIsLoading(true);
             try {
-                // pageIndex is 0-based in react-table, API expects 1-based page
                 const response = await getProductPerformanceReports(
                     pagination.pageIndex + 1,
                     pagination.pageSize,
                     appliedStartDate || undefined,
                     appliedEndDate || undefined
                 );
-
                 setPerformanceData(response.data);
                 setPageCount(response.meta.lastPage);
                 setError(null);
@@ -61,10 +50,8 @@ export const ProductPerformanceReportsPage: React.FC = () => {
                 setIsLoading(false);
             }
         };
-
         fetchReports();
     }, [pagination.pageIndex, pagination.pageSize, appliedStartDate, appliedEndDate]);
-
     return (
         <div className="performance-reports-page-wrapper">
             <div className="performance-reports-page-container">
@@ -74,7 +61,6 @@ export const ProductPerformanceReportsPage: React.FC = () => {
                         Evalúa la rotación de inventario y los ingresos estimados por producto en un rango de fechas.
                     </p>
                 </div>
-
                 <div className="filters-container">
                     <div className="filter-group">
                         <label htmlFor="startDate-filter">Fecha de Inicio</label>
@@ -85,7 +71,6 @@ export const ProductPerformanceReportsPage: React.FC = () => {
                             onChange={(e) => setStartDateFilter(e.target.value)}
                         />
                     </div>
-
                     <div className="filter-group">
                         <label htmlFor="endDate-filter">Fecha de Fin</label>
                         <input
@@ -95,7 +80,6 @@ export const ProductPerformanceReportsPage: React.FC = () => {
                             onChange={(e) => setEndDateFilter(e.target.value)}
                         />
                     </div>
-
                     <div className="filter-actions">
                         <button className="btn-search" onClick={handleSearch}>
                             Buscar
@@ -105,7 +89,6 @@ export const ProductPerformanceReportsPage: React.FC = () => {
                         </button>
                     </div>
                 </div>
-
                 {error ? (
                     <div className="performance-error">
                         <p>⚠️ {error}</p>
@@ -124,4 +107,4 @@ export const ProductPerformanceReportsPage: React.FC = () => {
             </div>
         </div>
     );
-};
+};

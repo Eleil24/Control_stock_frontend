@@ -4,14 +4,12 @@
     margin: 0 auto;
     width: 100%;
 }
-
 .performance-reports-page-container {
     background-color: var(--card-bg, #ffffff);
     border-radius: 12px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     padding: 2rem;
 }
-
 .performance-reports-page-header {
     display: flex;
     flex-direction: column;
@@ -21,26 +19,21 @@
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--border-color, #e5e7eb);
 }
-
 .performance-reports-title {
     font-size: 1.8rem;
     font-weight: 700;
     color: var(--text-primary, #111827);
     margin: 0 0 0.5rem 0;
 }
-
 .performance-reports-subtitle {
     color: var(--text-secondary, #6b7280);
     margin: 0;
     font-size: 1rem;
 }
-
 .performance-error {
     padding: 1rem;
     background-color: #fee2e2;
     color: #991b1b;
     border-radius: 8px;
     margin-bottom: 1.5rem;
-}
-
-/* Filters styling imported implicitly from the components inheriting .filters-container from other css but safe to have */
+}

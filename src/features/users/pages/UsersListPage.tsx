@@ -4,18 +4,15 @@ import { UsersTable } from '../components/UsersTable';
 import { getUsers } from '../api/getUsers';
 import type { User } from '../types';
 import '../../products/pages/ProductsListPage.css';
-
 export const UsersListPage = ({ onCreateNew }: { onCreateNew: () => void }) => {
     const [users, setUsers] = useState<User[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [pageCount, setPageCount] = useState(-1);
-
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10,
     });
-
     const fetchUsers = async () => {
         setIsLoading(true);
         try {
@@ -29,11 +26,9 @@ export const UsersListPage = ({ onCreateNew }: { onCreateNew: () => void }) => {
             setIsLoading(false);
         }
     };
-
     useEffect(() => {
         fetchUsers();
     }, [pagination.pageIndex, pagination.pageSize]);
-
     return (
         <div className="products-page">
             <div className="products-page-header">
@@ -63,7 +58,6 @@ export const UsersListPage = ({ onCreateNew }: { onCreateNew: () => void }) => {
                     </button>
                 </div>
             </div>
-
             {error ? (
                 <div className="products-error">
                     <p>⚠️ {error}</p>
@@ -82,4 +76,4 @@ export const UsersListPage = ({ onCreateNew }: { onCreateNew: () => void }) => {
             )}
         </div>
     );
-};
+};

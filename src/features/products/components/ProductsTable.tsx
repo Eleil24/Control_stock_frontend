@@ -12,7 +12,6 @@ import type { Product, UpdateProductDto } from '../types';
 import { updateProduct } from '../api/updateProduct';
 import './ProductsTable.css';
 import './Pagination.css';
-
 interface ProductsTableProps {
     products: Product[];
     isLoading?: boolean;
@@ -21,7 +20,6 @@ interface ProductsTableProps {
     onPaginationChange: OnChangeFn<PaginationState>;
     onProductUpdated?: () => void;
 }
-
 export const ProductsTable = ({
     products,
     isLoading,
@@ -30,12 +28,9 @@ export const ProductsTable = ({
     onPaginationChange,
     onProductUpdated
 }: ProductsTableProps) => {
-
-    // Sirve para la edicion de los datos de los productos
     const [editingRowId, setEditingRowId] = useState<number | string | null>(null);
     const [editFormData, setEditFormData] = useState<UpdateProductDto>({});
     const [isSaving, setIsSaving] = useState(false);
-
     const handleEditClick = (product: Product) => {
         setEditingRowId(product.id);
         setEditFormData({
@@ -44,12 +39,10 @@ export const ProductsTable = ({
             price: product.price
         });
     };
-
     const handleCancelEdit = () => {
         setEditingRowId(null);
         setEditFormData({});
     };
-
     const handleSaveEdit = async (id: number | string) => {
         setIsSaving(true);
         try {
@@ -65,13 +58,11 @@ export const ProductsTable = ({
             setIsSaving(false);
         }
     };
-
     const getStockStatus = (stock: number) => {
         if (stock === 0) return { label: 'Agotado', className: 'stock-out' };
         if (stock <= 10) return { label: 'Stock Bajo', className: 'stock-low' };
         return { label: 'En Stock', className: 'stock-ok' };
     };
-
     const columns = useMemo<ColumnDef<Product>[]>(
         () => [
             {
@@ -163,7 +154,6 @@ export const ProductsTable = ({
                     const product = info.row.original;
                     const meta = info.table.options.meta as any;
                     const isEditing = meta.editingRowId === product.id;
-
                     if (isEditing) {
                         return (
                             <div className="actions-cell">
@@ -186,7 +176,6 @@ export const ProductsTable = ({
                             </div>
                         );
                     }
-
                     return (
                         <button
                             onClick={() => meta.handleEditClick(product)}
@@ -201,7 +190,6 @@ export const ProductsTable = ({
         ],
         []
     );
-
     const table = useReactTable({
         data: products,
         columns,
@@ -222,7 +210,6 @@ export const ProductsTable = ({
             handleCancelEdit
         }
     });
-
     if (isLoading && !products.length) {
         return (
             <div className="products-table-skeleton">
@@ -232,7 +219,6 @@ export const ProductsTable = ({
             </div>
         );
     }
-
     if (!isLoading && !products.length) {
         return (
             <div className="products-empty-state">
@@ -240,7 +226,6 @@ export const ProductsTable = ({
             </div>
         );
     }
-
     return (
         <div className="table-container-wrapper">
             <div className="products-table-container">
@@ -274,7 +259,6 @@ export const ProductsTable = ({
                     </tbody>
                 </table>
             </div>
-
             <div className="pagination-controls">
                 <div className="pagination-info">
                     Página <strong>{table.getState().pagination.pageIndex + 1}</strong> de{' '}
@@ -329,4 +313,4 @@ export const ProductsTable = ({
             </div>
         </div>
     );
-};
+};

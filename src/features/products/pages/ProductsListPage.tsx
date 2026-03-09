@@ -4,23 +4,18 @@ import { ProductsTable } from '../components/ProductsTable';
 import { getProducts } from '../api/getProducts';
 import type { Product } from '../types';
 import './ProductsListPage.css';
-
 export const ProductsListPage = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [pageCount, setPageCount] = useState(-1);
-
-    // pagination state for react-table: 0-indexed page
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10,
     });
-
     const fetchProducts = async () => {
         setIsLoading(true);
         try {
-            // translate 0-based pageIndex to 1-based API page
             const response = await getProducts(pagination.pageIndex + 1, pagination.pageSize);
             setProducts(response.data);
             setPageCount(response.meta.lastPage);
@@ -31,11 +26,9 @@ export const ProductsListPage = () => {
             setIsLoading(false);
         }
     };
-
     useEffect(() => {
         fetchProducts();
     }, [pagination.pageIndex, pagination.pageSize]);
-
     return (
         <div className="products-page">
             <div className="products-page-header">
@@ -46,7 +39,6 @@ export const ProductsListPage = () => {
                     </p>
                 </div>
             </div>
-
             {error ? (
                 <div className="products-error">
                     <p>⚠️ {error}</p>
@@ -65,4 +57,4 @@ export const ProductsListPage = () => {
             )}
         </div>
     );
-};
+};

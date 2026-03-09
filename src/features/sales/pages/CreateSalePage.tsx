@@ -1,6 +1,5 @@
 import React from 'react';
 import { CreateSaleForm } from '../components/CreateSaleForm';
-
 export const CreateSalePage: React.FC = () => {
     return (
         <div className="page-container">
@@ -9,4 +8,4 @@ export const CreateSalePage: React.FC = () => {
             <CreateSaleForm />
         </div>
     );
-};
+};

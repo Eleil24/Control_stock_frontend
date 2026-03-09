@@ -3,20 +3,16 @@ import type { PaginationState } from '@tanstack/react-table';
 import { SuppliersTable } from '../components/SuppliersTable';
 import { getSuppliers } from '../api/getSuppliers';
 import type { Supplier } from '../types';
-import '../../products/pages/ProductsListPage.css'; // Reutilizamos estilos principales
-
+import '../../products/pages/ProductsListPage.css'; 
 export const SuppliersListPage = ({ onCreateNew }: { onCreateNew: () => void }) => {
     const [suppliers, setSuppliers] = useState<Supplier[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [pageCount, setPageCount] = useState(-1);
-
-    // pagination state for react-table: 0-indexed page
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10,
     });
-
     const fetchSuppliers = async () => {
         setIsLoading(true);
         try {
@@ -30,11 +26,9 @@ export const SuppliersListPage = ({ onCreateNew }: { onCreateNew: () => void }) 
             setIsLoading(false);
         }
     };
-
     useEffect(() => {
         fetchSuppliers();
     }, [pagination.pageIndex, pagination.pageSize]);
-
     return (
         <div className="products-page">
             <div className="products-page-header">
@@ -64,7 +58,6 @@ export const SuppliersListPage = ({ onCreateNew }: { onCreateNew: () => void }) 
                     </button>
                 </div>
             </div>
-
             {error ? (
                 <div className="products-error">
                     <p>⚠️ {error}</p>
@@ -83,4 +76,4 @@ export const SuppliersListPage = ({ onCreateNew }: { onCreateNew: () => void }) 
             )}
         </div>
     );
-};
+};

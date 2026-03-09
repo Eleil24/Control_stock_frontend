@@ -6,7 +6,6 @@ export interface User {
     isActive?: boolean;
     createdAt?: string;
 }
-
 export interface PaginatedUsers {
     data: User[];
     meta: {
@@ -14,4 +13,4 @@ export interface PaginatedUsers {
         page: number;
         lastPage: number;
     };
-}
+}

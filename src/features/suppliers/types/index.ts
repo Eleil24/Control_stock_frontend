@@ -5,7 +5,6 @@ export interface Supplier {
     email: string;
     createdAt: string;
 }
-
 export interface PaginatedSuppliers {
     data: Supplier[];
     meta: {
@@ -14,9 +13,8 @@ export interface PaginatedSuppliers {
         lastPage: number;
     };
 }
-
 export interface CreateSupplierDto {
     name: string;
     phone: string;
     email: string;
-}
+}

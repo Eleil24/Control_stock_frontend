@@ -3,36 +3,28 @@ import type { PaginationState } from '@tanstack/react-table';
 import { getNetProfitReports } from '../api/getNetProfitReports';
 import type { NetProfitReport } from '../types';
 import { NetProfitTable } from '../components/NetProfitTable';
-import './MovementHistoryReportsPage.css'; // Reciclando estilos
-
+import './MovementHistoryReportsPage.css'; 
 export const NetProfitReportsPage: React.FC = () => {
     const [reports, setReports] = useState<NetProfitReport[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [pageCount, setPageCount] = useState(0);
-
-    // Filters
     const [productNameFilter, setProductNameFilter] = useState('');
     const [startDateFilter, setStartDateFilter] = useState('');
     const [endDateFilter, setEndDateFilter] = useState('');
-
-    // Values to apply when searching
     const [appliedProductName, setAppliedProductName] = useState('');
     const [appliedStartDate, setAppliedStartDate] = useState('');
     const [appliedEndDate, setAppliedEndDate] = useState('');
-
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10,
     });
-
     const handleSearch = () => {
         setAppliedProductName(productNameFilter);
         setAppliedStartDate(startDateFilter);
         setAppliedEndDate(endDateFilter);
-        setPagination(prev => ({ ...prev, pageIndex: 0 })); // Reset page to 0
+        setPagination(prev => ({ ...prev, pageIndex: 0 })); 
     };
-
     const handleClearFilters = () => {
         setProductNameFilter('');
         setStartDateFilter('');
@@ -42,12 +34,10 @@ export const NetProfitReportsPage: React.FC = () => {
         setAppliedEndDate('');
         setPagination(prev => ({ ...prev, pageIndex: 0 }));
     };
-
     useEffect(() => {
         const fetchReports = async () => {
             setIsLoading(true);
             try {
-                // pageIndex is 0-based in react-table, API expects 1-based page
                 const response = await getNetProfitReports(
                     pagination.pageIndex + 1,
                     pagination.pageSize,
@@ -55,7 +45,6 @@ export const NetProfitReportsPage: React.FC = () => {
                     appliedEndDate || undefined,
                     appliedProductName || undefined
                 );
-
                 setReports(response.data);
                 setPageCount(response.meta.lastPage);
                 setError(null);
@@ -67,10 +56,8 @@ export const NetProfitReportsPage: React.FC = () => {
                 setIsLoading(false);
             }
         };
-
         fetchReports();
     }, [pagination.pageIndex, pagination.pageSize, appliedProductName, appliedStartDate, appliedEndDate]);
-
     return (
         <div className="movement-reports-page-wrapper">
             <div className="movement-reports-page-container">
@@ -82,7 +69,6 @@ export const NetProfitReportsPage: React.FC = () => {
                         </p>
                     </div>
                 </div>
-
                 <div className="filters-container">
                     <div className="filter-group">
                         <label htmlFor="productName-filter">Nombre del Producto</label>
@@ -95,7 +81,6 @@ export const NetProfitReportsPage: React.FC = () => {
                             onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
                         />
                     </div>
-
                     <div className="filter-group">
                         <label htmlFor="startDate-filter">Fecha Inicio</label>
                         <input
@@ -105,7 +90,6 @@ export const NetProfitReportsPage: React.FC = () => {
                             onChange={(e) => setStartDateFilter(e.target.value)}
                         />
                     </div>
-
                     <div className="filter-group">
                         <label htmlFor="endDate-filter">Fecha Fin</label>
                         <input
@@ -115,7 +99,6 @@ export const NetProfitReportsPage: React.FC = () => {
                             onChange={(e) => setEndDateFilter(e.target.value)}
                         />
                     </div>
-
                     <div className="filter-actions">
                         <button className="btn-search" onClick={handleSearch}>
                             Buscar
@@ -125,7 +108,6 @@ export const NetProfitReportsPage: React.FC = () => {
                         </button>
                     </div>
                 </div>
-
                 {error ? (
                     <div className="movements-error">
                         <p>⚠️ {error}</p>
@@ -144,4 +126,4 @@ export const NetProfitReportsPage: React.FC = () => {
             </div>
         </div>
     );
-};
+};

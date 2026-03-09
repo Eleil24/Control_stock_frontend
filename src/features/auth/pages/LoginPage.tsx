@@ -3,24 +3,19 @@ import { Lock, User, LogIn, ShieldCheck } from 'lucide-react';
 import { login } from '../api/login';
 import { useAuth } from '../context/AuthContext';
 import './LoginPage.css';
-
 export const LoginPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
-    const { loginState } = useAuth(); // Usamos nuestro nuevo contexto
-
+    const { loginState } = useAuth(); 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
         setLoading(true);
-
         try {
             const data = await login(username, password);
-            // Guardar token y usuario en el CONTEXTO GLOBAL (esto internamente guarda en localStorage)
             loginState(data.access_token, data.user);
-            // Redirigir al inicio
             window.location.href = '/';
         } catch (err: any) {
             setError(err.message || 'Error desconocido');
@@ -28,7 +23,6 @@ export const LoginPage = () => {
             setLoading(false);
         }
     };
-
     return (
         <div className="login-page-container">
             <div className="login-background-shapes">
@@ -36,7 +30,6 @@ export const LoginPage = () => {
                 <div className="shape shape-2"></div>
                 <div className="shape shape-3"></div>
             </div>
-
             <div className="login-card">
                 <div className="login-header">
                     <div className="login-icon-container">
@@ -45,14 +38,12 @@ export const LoginPage = () => {
                     <h1 className="login-title">Bienvenido</h1>
                     <p className="login-subtitle">Ingresa a tu cuenta para continuar</p>
                 </div>
-
                 <form onSubmit={handleSubmit} className="login-form">
                     {error && (
                         <div className="login-error-message">
                             <span>{error}</span>
                         </div>
                     )}
-
                     <div className="input-group">
                         <label htmlFor="username">Usuario</label>
                         <div className="input-with-icon">
@@ -68,7 +59,6 @@ export const LoginPage = () => {
                             />
                         </div>
                     </div>
-
                     <div className="input-group">
                         <label htmlFor="password">Contraseña</label>
                         <div className="input-with-icon">
@@ -84,14 +74,13 @@ export const LoginPage = () => {
                             />
                         </div>
                     </div>
-
                     <button
                         type="submit"
                         className={`login-submit-button ${loading ? 'loading' : ''}`}
                         disabled={loading}
                     >
                         {loading ? (
-                            <div className="spinner"></div> // Added simple css spinner inside
+                            <div className="spinner"></div> 
                         ) : (
                             <>
                                 <span>Iniciar Sesión</span>
@@ -103,4 +92,4 @@ export const LoginPage = () => {
             </div>
         </div>
     );
-};
+};

@@ -8,10 +8,9 @@ import {
     type OnChangeFn
 } from '@tanstack/react-table';
 import type { ProductPerformance } from '../types';
-import '../components/ProductsTable.css'; // Reusing base table styles
+import '../components/ProductsTable.css'; 
 import '../components/Pagination.css';
 import './ProductPerformanceTable.css';
-
 interface ProductPerformanceTableProps {
     performanceData: ProductPerformance[];
     isLoading?: boolean;
@@ -19,7 +18,6 @@ interface ProductPerformanceTableProps {
     pagination: PaginationState;
     onPaginationChange: OnChangeFn<PaginationState>;
 }
-
 export const ProductPerformanceTable = ({
     performanceData,
     isLoading,
@@ -27,7 +25,6 @@ export const ProductPerformanceTable = ({
     pagination,
     onPaginationChange
 }: ProductPerformanceTableProps) => {
-
     const columns = useMemo<ColumnDef<ProductPerformance>[]>(
         () => [
             {
@@ -79,7 +76,6 @@ export const ProductPerformanceTable = ({
         ],
         []
     );
-
     const table = useReactTable({
         data: performanceData,
         columns,
@@ -91,7 +87,6 @@ export const ProductPerformanceTable = ({
         getCoreRowModel: getCoreRowModel(),
         manualPagination: true,
     });
-
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat('es-CO', {
             style: 'currency',
@@ -99,7 +94,6 @@ export const ProductPerformanceTable = ({
             minimumFractionDigits: 0
         }).format(amount);
     }
-
     if (isLoading && !performanceData.length) {
         return (
             <div className="products-table-skeleton">
@@ -109,7 +103,6 @@ export const ProductPerformanceTable = ({
             </div>
         );
     }
-
     if (!isLoading && !performanceData.length) {
         return (
             <div className="products-empty-state">
@@ -117,7 +110,6 @@ export const ProductPerformanceTable = ({
             </div>
         );
     }
-
     return (
         <div className="table-container-wrapper">
             <div className="products-table-container">
@@ -143,15 +135,11 @@ export const ProductPerformanceTable = ({
                             <tr key={row.id}>
                                 {row.getVisibleCells().map(cell => {
                                     let content = flexRender(cell.column.columnDef.cell, cell.getContext());
-
-                                    // Apply custom class formatting
                                     if (cell.column.id === 'price' || cell.column.id === 'estimatedRevenue') {
                                         const val = cell.getValue() as number;
                                         content = <span className={cell.column.id === 'estimatedRevenue' ? 'revenue-total' : ''}>{formatCurrency(val)}</span>;
                                     }
-
                                     const isRightAligned = ['stockCurrent', 'soldQuantity', 'price', 'estimatedRevenue'].includes(cell.column.id);
-
                                     return (
                                         <td key={cell.id} className={`col-${cell.column.id} ${isRightAligned ? 'text-right' : ''}`}>
                                             {content}
@@ -163,7 +151,6 @@ export const ProductPerformanceTable = ({
                     </tbody>
                 </table>
             </div>
-
             <div className="pagination-controls">
                 <div className="pagination-info">
                     Página <strong>{table.getState().pagination.pageIndex + 1}</strong> de{' '}
@@ -218,4 +205,4 @@ export const ProductPerformanceTable = ({
             </div>
         </div>
     );
-};
+};

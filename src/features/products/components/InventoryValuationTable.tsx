@@ -8,9 +8,8 @@ import {
     type OnChangeFn
 } from '@tanstack/react-table';
 import type { Product } from '../types';
-import '../components/ProductsTable.css'; // Reusing styles from ProductsTable
+import '../components/ProductsTable.css'; 
 import '../components/Pagination.css';
-
 interface InventoryValuationTableProps {
     products: Product[];
     isLoading?: boolean;
@@ -18,7 +17,6 @@ interface InventoryValuationTableProps {
     pagination: PaginationState;
     onPaginationChange: OnChangeFn<PaginationState>;
 }
-
 export const InventoryValuationTable = ({
     products,
     isLoading,
@@ -26,7 +24,6 @@ export const InventoryValuationTable = ({
     pagination,
     onPaginationChange
 }: InventoryValuationTableProps) => {
-
     const columns = useMemo<ColumnDef<Product>[]>(
         () => [
             {
@@ -70,7 +67,6 @@ export const InventoryValuationTable = ({
         ],
         []
     );
-
     const table = useReactTable({
         data: products,
         columns,
@@ -82,8 +78,6 @@ export const InventoryValuationTable = ({
         getCoreRowModel: getCoreRowModel(),
         manualPagination: true,
     });
-
-    // Formatting currency
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat('es-CO', {
             style: 'currency',
@@ -91,7 +85,6 @@ export const InventoryValuationTable = ({
             minimumFractionDigits: 0
         }).format(amount);
     }
-
     if (isLoading && !products.length) {
         return (
             <div className="products-table-skeleton">
@@ -101,7 +94,6 @@ export const InventoryValuationTable = ({
             </div>
         );
     }
-
     if (!isLoading && !products.length) {
         return (
             <div className="products-empty-state">
@@ -109,7 +101,6 @@ export const InventoryValuationTable = ({
             </div>
         );
     }
-
     return (
         <div className="table-container-wrapper">
             <div className="products-table-container">
@@ -134,13 +125,11 @@ export const InventoryValuationTable = ({
                         {table.getRowModel().rows.map(row => (
                             <tr key={row.id}>
                                 {row.getVisibleCells().map(cell => {
-                                    // Custom cell rendering to reuse formatting where desired
                                     let content = flexRender(cell.column.columnDef.cell, cell.getContext());
                                     if (cell.column.id === 'price' || cell.column.id === 'valuation') {
                                         const val = cell.getValue() as number;
                                         content = <span className={cell.column.id === 'valuation' ? 'val-total' : ''}>{formatCurrency(val)}</span>;
                                     }
-
                                     return (
                                         <td key={cell.id} className={`col-${cell.column.id} ${cell.column.id === 'price' || cell.column.id === 'valuation' || cell.column.id === 'stock' ? 'text-right' : ''}`}>
                                             {content}
@@ -152,7 +141,6 @@ export const InventoryValuationTable = ({
                     </tbody>
                 </table>
             </div>
-
             <div className="pagination-controls">
                 <div className="pagination-info">
                     Página <strong>{table.getState().pagination.pageIndex + 1}</strong> de{' '}
@@ -207,4 +195,4 @@ export const InventoryValuationTable = ({
             </div>
         </div>
     );
-};
+};

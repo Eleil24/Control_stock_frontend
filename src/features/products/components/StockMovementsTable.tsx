@@ -9,7 +9,6 @@ import {
 } from '@tanstack/react-table';
 import type { StockMovement } from '../types';
 import './Pagination.css';
-
 interface StockMovementsTableProps {
     movements: StockMovement[];
     isLoading?: boolean;
@@ -17,7 +16,6 @@ interface StockMovementsTableProps {
     pagination: PaginationState;
     onPaginationChange: OnChangeFn<PaginationState>;
 }
-
 export const StockMovementsTable = ({
     movements,
     isLoading,
@@ -25,14 +23,10 @@ export const StockMovementsTable = ({
     pagination,
     onPaginationChange
 }: StockMovementsTableProps) => {
-
-    // Función auxiliar para formatear la fecha a algo legible
     const formatDate = (dateString: string) => {
-        // Si la fecha ya viene en formato "DD/MM/YYYY, HH:MM:SS" desde el backend
         if (dateString && dateString.includes(',') && dateString.includes('/')) {
             return dateString.replace(', ', ' a las ');
         }
-
         try {
             const date = new Date(dateString);
             if (!isNaN(date.getTime())) {
@@ -43,13 +37,9 @@ export const StockMovementsTable = ({
                 return date.toLocaleDateString('es-ES', options);
             }
         } catch (e) {
-            // Ignorar error y devolver el original
         }
-
         return dateString;
     };
-
-    // Función auxiliar para traducir y dar color al tipo de movimiento
     const getMovementTypeBadge = (type: string) => {
         switch (type) {
             case 'IN':
@@ -62,7 +52,6 @@ export const StockMovementsTable = ({
                 return <span className="movement-badge">{type}</span>;
         }
     };
-
     const columns = useMemo<ColumnDef<StockMovement>[]>(
         () => [
             {
@@ -102,7 +91,6 @@ export const StockMovementsTable = ({
         ],
         []
     );
-
     const table = useReactTable({
         data: movements,
         columns,
@@ -114,7 +102,6 @@ export const StockMovementsTable = ({
         getCoreRowModel: getCoreRowModel(),
         manualPagination: true,
     });
-
     if (isLoading && !movements.length) {
         return (
             <div className="movements-table-skeleton">
@@ -122,7 +109,6 @@ export const StockMovementsTable = ({
             </div>
         );
     }
-
     if (!isLoading && !movements.length) {
         return (
             <div className="movements-empty-state">
@@ -130,7 +116,6 @@ export const StockMovementsTable = ({
             </div>
         );
     }
-
     return (
         <div className="table-container-wrapper">
             <div className="table-wrapper">
@@ -164,7 +149,6 @@ export const StockMovementsTable = ({
                     </tbody>
                 </table>
             </div>
-
             <div className="pagination-controls">
                 <div className="pagination-info">
                     Página <strong>{table.getState().pagination.pageIndex + 1}</strong> de{' '}
@@ -219,4 +203,4 @@ export const StockMovementsTable = ({
             </div>
         </div>
     );
-};
+};

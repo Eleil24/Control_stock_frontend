@@ -1,6 +1,5 @@
 import type { CreatePurchaseDto, PurchaseResponse } from '../types';
 import { api } from '../../../lib/axios';
-
 export const createPurchase = async (data: CreatePurchaseDto): Promise<PurchaseResponse> => {
     try {
         const response = await api.post('/purchases', data);
@@ -12,4 +11,4 @@ export const createPurchase = async (data: CreatePurchaseDto): Promise<PurchaseR
         }
         throw new Error(errorMessage);
     }
-};
+};

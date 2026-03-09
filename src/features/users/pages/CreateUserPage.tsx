@@ -2,27 +2,22 @@ import { useState } from 'react';
 import { UserPlus, Save, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { createUser } from '../api/createUser';
 import './CreateUserPage.css';
-
 interface CreateUserPageProps {
     onCancel?: () => void;
 }
-
 export const CreateUserPage = ({ onCancel }: CreateUserPageProps) => {
     const [name, setName] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('VENDEDOR');
-
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
         setSuccess(null);
         setIsLoading(true);
-
         try {
             await createUser({
                 name,
@@ -30,10 +25,7 @@ export const CreateUserPage = ({ onCancel }: CreateUserPageProps) => {
                 password,
                 role
             });
-
             setSuccess(`Usuario ${name} (${role}) creado exitosamente.`);
-
-            // Clean form
             setName('');
             setUsername('');
             setPassword('');
@@ -44,7 +36,6 @@ export const CreateUserPage = ({ onCancel }: CreateUserPageProps) => {
             setIsLoading(false);
         }
     };
-
     return (
         <div className="page-container">
             <div className="page-header">
@@ -56,7 +47,6 @@ export const CreateUserPage = ({ onCancel }: CreateUserPageProps) => {
                     <UserPlus size={28} className="header-icon" />
                 </div>
             </div>
-
             <div className="card form-card">
                 {error && (
                     <div className="alert alert-error">
@@ -64,14 +54,12 @@ export const CreateUserPage = ({ onCancel }: CreateUserPageProps) => {
                         <span>{error}</span>
                     </div>
                 )}
-
                 {success && (
                     <div className="alert alert-success">
                         <CheckCircle2 size={20} />
                         <span>{success}</span>
                     </div>
                 )}
-
                 <form onSubmit={handleSubmit} className="form-layout">
                     <div className="form-grid">
                         <div className="form-group">
@@ -87,7 +75,6 @@ export const CreateUserPage = ({ onCancel }: CreateUserPageProps) => {
                                 className="form-input"
                             />
                         </div>
-
                         <div className="form-group">
                             <label htmlFor="username">Nombre de Usuario (Login)</label>
                             <input
@@ -101,7 +88,6 @@ export const CreateUserPage = ({ onCancel }: CreateUserPageProps) => {
                                 className="form-input"
                             />
                         </div>
-
                         <div className="form-group">
                             <label htmlFor="password">Contraseña</label>
                             <input
@@ -115,7 +101,6 @@ export const CreateUserPage = ({ onCancel }: CreateUserPageProps) => {
                                 className="form-input"
                             />
                         </div>
-
                         <div className="form-group">
                             <label htmlFor="role">Rol del Sistema</label>
                             <select
@@ -131,7 +116,6 @@ export const CreateUserPage = ({ onCancel }: CreateUserPageProps) => {
                             </select>
                         </div>
                     </div>
-
                     <div className="form-actions">
                         <button
                             type="button"
@@ -177,4 +161,4 @@ export const CreateUserPage = ({ onCancel }: CreateUserPageProps) => {
             </div>
         </div>
     );
-};
+};

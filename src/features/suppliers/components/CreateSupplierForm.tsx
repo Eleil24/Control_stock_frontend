@@ -1,31 +1,23 @@
 import React, { useState } from 'react';
 import { useCreateSupplier } from '../hooks/useCreateSupplier';
 import './CreateSupplierForm.css';
-
 interface CreateSupplierFormProps {
     onCancel?: () => void;
 }
-
 export const CreateSupplierForm: React.FC<CreateSupplierFormProps> = ({ onCancel }) => {
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [email, setEmail] = useState('');
-
     const { mutate, isLoading, isError, error } = useCreateSupplier();
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         if (!name.trim()) {
             alert('El nombre del proveedor es obligatorio');
             return;
         }
-
         try {
             await mutate({ name, phone, email });
             alert('¡Proveedor registrado con éxito!');
-
-            // Clean the form
             setName('');
             setPhone('');
             setEmail('');
@@ -33,7 +25,6 @@ export const CreateSupplierForm: React.FC<CreateSupplierFormProps> = ({ onCancel
             console.error(err);
         }
     };
-
     return (
         <div className="supplier-form-container">
             <div className="supplier-form-card">
@@ -41,13 +32,11 @@ export const CreateSupplierForm: React.FC<CreateSupplierFormProps> = ({ onCancel
                 <p className="supplier-form-subtitle">
                     Ingresa los datos del proveedor para poder registrar futuras entradas o compras de inventario.
                 </p>
-
                 {isError && (
                     <div className="supplier-error-alert">
                         Error: {error}
                     </div>
                 )}
-
                 <form onSubmit={handleSubmit} className="supplier-form">
                     <div className="form-group">
                         <label htmlFor="supplierName">Nombre / Razón Social <span className="required">*</span></label>
@@ -60,7 +49,6 @@ export const CreateSupplierForm: React.FC<CreateSupplierFormProps> = ({ onCancel
                             disabled={isLoading}
                         />
                     </div>
-
                     <div className="form-group">
                         <label htmlFor="supplierPhone">Teléfono de Contacto</label>
                         <input
@@ -72,7 +60,6 @@ export const CreateSupplierForm: React.FC<CreateSupplierFormProps> = ({ onCancel
                             disabled={isLoading}
                         />
                     </div>
-
                     <div className="form-group">
                         <label htmlFor="supplierEmail">Correo Electrónico</label>
                         <input
@@ -84,7 +71,6 @@ export const CreateSupplierForm: React.FC<CreateSupplierFormProps> = ({ onCancel
                             disabled={isLoading}
                         />
                     </div>
-
                     <div className="form-actions">
                         <button
                             type="submit"
@@ -108,4 +94,4 @@ export const CreateSupplierForm: React.FC<CreateSupplierFormProps> = ({ onCancel
             </div>
         </div>
     );
-};
+};

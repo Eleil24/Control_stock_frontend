@@ -9,7 +9,6 @@ import {
 } from '@tanstack/react-table';
 import type { NetProfitReport } from '../types';
 import './Pagination.css';
-
 interface NetProfitTableProps {
     reports: NetProfitReport[];
     isLoading?: boolean;
@@ -17,7 +16,6 @@ interface NetProfitTableProps {
     pagination: PaginationState;
     onPaginationChange: OnChangeFn<PaginationState>;
 }
-
 export const NetProfitTable = ({
     reports,
     isLoading,
@@ -25,7 +23,6 @@ export const NetProfitTable = ({
     pagination,
     onPaginationChange
 }: NetProfitTableProps) => {
-
     const formatCurrency = (value: number) => {
         return new Intl.NumberFormat('es-CO', {
             style: 'currency',
@@ -33,7 +30,6 @@ export const NetProfitTable = ({
             minimumFractionDigits: 0
         }).format(value);
     };
-
     const columns = useMemo<ColumnDef<NetProfitReport>[]>(
         () => [
             {
@@ -76,7 +72,6 @@ export const NetProfitTable = ({
         ],
         []
     );
-
     const table = useReactTable({
         data: reports,
         columns,
@@ -88,7 +83,6 @@ export const NetProfitTable = ({
         getCoreRowModel: getCoreRowModel(),
         manualPagination: true,
     });
-
     if (isLoading && !reports.length) {
         return (
             <div className="movements-table-skeleton">
@@ -96,7 +90,6 @@ export const NetProfitTable = ({
             </div>
         );
     }
-
     if (!isLoading && !reports.length) {
         return (
             <div className="movements-empty-state">
@@ -104,7 +97,6 @@ export const NetProfitTable = ({
             </div>
         );
     }
-
     return (
         <div className="table-container-wrapper">
             <div className="table-wrapper">
@@ -138,7 +130,6 @@ export const NetProfitTable = ({
                     </tbody>
                 </table>
             </div>
-
             <div className="pagination-controls">
                 <div className="pagination-info">
                     Página <strong>{table.getState().pagination.pageIndex + 1}</strong> de{' '}
@@ -193,4 +184,4 @@ export const NetProfitTable = ({
             </div>
         </div>
     );
-};
+};

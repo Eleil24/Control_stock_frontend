@@ -12,7 +12,6 @@ import type { Supplier } from '../types';
 import { updateSupplier } from '../api/updateSupplier';
 import '../../products/components/ProductsTable.css';
 import '../../products/components/Pagination.css';
-
 interface SuppliersTableProps {
     suppliers: Supplier[];
     isLoading?: boolean;
@@ -21,7 +20,6 @@ interface SuppliersTableProps {
     onPaginationChange: OnChangeFn<PaginationState>;
     onSupplierUpdated?: () => void;
 }
-
 export const SuppliersTable = ({
     suppliers,
     isLoading,
@@ -30,11 +28,9 @@ export const SuppliersTable = ({
     onPaginationChange,
     onSupplierUpdated
 }: SuppliersTableProps) => {
-
     const [editingRowId, setEditingRowId] = useState<number | string | null>(null);
     const [editFormData, setEditFormData] = useState<{ name?: string; phone?: string; email?: string }>({});
     const [isSaving, setIsSaving] = useState(false);
-
     const handleEditClick = (supplier: Supplier) => {
         setEditingRowId(supplier.id);
         setEditFormData({
@@ -43,18 +39,15 @@ export const SuppliersTable = ({
             email: supplier.email || ''
         });
     };
-
     const handleCancelEdit = () => {
         setEditingRowId(null);
         setEditFormData({});
     };
-
     const handleSaveEdit = async (id: number | string) => {
         if (!editFormData.name?.trim()) {
             alert('El nombre del proveedor es obligatorio');
             return;
         }
-
         setIsSaving(true);
         try {
             await updateSupplier(Number(id), {
@@ -73,7 +66,6 @@ export const SuppliersTable = ({
             setIsSaving(false);
         }
     };
-
     const columns = useMemo<ColumnDef<Supplier>[]>(
         () => [
             {
@@ -154,7 +146,6 @@ export const SuppliersTable = ({
                     const supplier = info.row.original;
                     const meta = info.table.options.meta as any;
                     const isEditing = meta.editingRowId === supplier.id;
-
                     if (isEditing) {
                         return (
                             <div className="actions-cell">
@@ -177,7 +168,6 @@ export const SuppliersTable = ({
                             </div>
                         );
                     }
-
                     return (
                         <button
                             onClick={() => meta.handleEditClick(supplier)}
@@ -192,7 +182,6 @@ export const SuppliersTable = ({
         ],
         []
     );
-
     const table = useReactTable({
         data: suppliers,
         columns,
@@ -213,7 +202,6 @@ export const SuppliersTable = ({
             handleCancelEdit
         }
     });
-
     if (isLoading && !suppliers.length) {
         return (
             <div className="products-table-skeleton">
@@ -223,7 +211,6 @@ export const SuppliersTable = ({
             </div>
         );
     }
-
     if (!isLoading && !suppliers.length) {
         return (
             <div className="products-empty-state">
@@ -231,7 +218,6 @@ export const SuppliersTable = ({
             </div>
         );
     }
-
     return (
         <div className="table-container-wrapper">
             <div className="products-table-container">
@@ -265,7 +251,6 @@ export const SuppliersTable = ({
                     </tbody>
                 </table>
             </div>
-
             <div className="pagination-controls">
                 <div className="pagination-info">
                     Página <strong>{table.getState().pagination.pageIndex + 1}</strong> de{' '}
@@ -320,4 +305,4 @@ export const SuppliersTable = ({
             </div>
         </div>
     );
-};
+};

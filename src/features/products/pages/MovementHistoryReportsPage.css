@@ -4,14 +4,12 @@
     margin: 0 auto;
     width: 100%;
 }
-
 .movement-reports-page-container {
     background-color: var(--card-bg, #ffffff);
     border-radius: 12px;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     padding: 2rem;
 }
-
 .movement-reports-page-header {
     display: flex;
     flex-direction: column;
@@ -21,20 +19,17 @@
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--border-color, #e5e7eb);
 }
-
 .movement-reports-title {
     font-size: 1.8rem;
     font-weight: 700;
     color: var(--text-primary, #111827);
     margin: 0 0 0.5rem 0;
 }
-
 .movement-reports-subtitle {
     color: var(--text-secondary, #6b7280);
     margin: 0;
     font-size: 1rem;
 }
-
 .filters-container {
     display: flex;
     gap: 1.5rem;
@@ -46,7 +41,6 @@
     align-items: flex-end;
     flex-wrap: wrap;
 }
-
 .filter-group {
     display: flex;
     flex-direction: column;
@@ -54,13 +48,11 @@
     flex: 1;
     min-width: 200px;
 }
-
 .filter-group label {
     font-size: 0.875rem;
     font-weight: 600;
     color: var(--text-primary, #374151);
 }
-
 .filter-group input,
 .filter-group select {
     padding: 0.625rem 0.875rem;
@@ -70,19 +62,16 @@
     background-color: white;
     transition: all 0.2s ease;
 }
-
 .filter-group input:focus,
 .filter-group select:focus {
     outline: none;
     border-color: var(--brand-primary, #3b82f6);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
-
 .filter-actions {
     display: flex;
     gap: 1rem;
 }
-
 .btn-search {
     padding: 0.625rem 1.25rem;
     background-color: var(--brand-primary, #3b82f6);
@@ -93,11 +82,9 @@
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
-
 .btn-search:hover {
     background-color: var(--brand-primary-hover, #2563eb);
 }
-
 .btn-clear {
     padding: 0.625rem 1.25rem;
     background-color: white;
@@ -108,11 +95,9 @@
     cursor: pointer;
     transition: all 0.2s ease;
 }
-
 .btn-clear:hover {
     background-color: var(--bg-hover, #f3f4f6);
 }
-
 .movements-error {
     padding: 1rem;
     background-color: #fee2e2;

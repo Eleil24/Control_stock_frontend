@@ -1,19 +1,14 @@
-/* Re-using base styles from POS, adding purchase-specific overrides */
-
 .purchase-card {
     border-color: #d1e3f8;
     background-color: #fcfcfc;
 }
-
 .purchase-card:hover {
     border-color: #28a745;
     box-shadow: 0 6px 12px rgba(40, 167, 69, 0.15);
 }
-
 .purchase-card h4 {
     margin-bottom: 4px;
 }
-
 .purchase-card .add-icon {
     display: inline-block;
     margin-top: 10px;
@@ -25,35 +20,27 @@
     border-radius: 4px;
     text-align: center;
 }
-
 .purchase-form {
     border-top-color: #28a745;
-    /* Green top border instead of blue */
 }
-
 .purchase-btn {
     background-color: #28a745;
 }
-
 .purchase-btn:hover:not(:disabled) {
     background-color: #218838;
 }
-
 .purchase-table th {
     font-size: 0.75rem;
 }
-
 .cost-input-wrapper {
     display: flex;
     align-items: center;
 }
-
 .currency-symbol {
     color: #666;
     margin-right: 4px;
     font-weight: 500;
 }
-
 .cost-input {
     width: 60px;
     padding: 8px 6px;

@@ -10,24 +10,20 @@
     animation: fadeIn 0.4s ease-out;
     text-align: left;
 }
-
 @keyframes fadeIn {
     from {
         opacity: 0;
         transform: translateY(10px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
     }
 }
-
 .product-form-header {
     margin-bottom: 2rem;
     text-align: center;
 }
-
 .product-form-title {
     margin: 0;
     color: #111827;
@@ -35,26 +31,22 @@
     font-weight: 700;
     letter-spacing: -0.025em;
 }
-
 .product-form-subtitle {
     margin: 0.5rem 0 0;
     color: #6b7280;
     font-size: 0.95rem;
 }
-
 .product-form-group {
     margin-bottom: 1.5rem;
     display: flex;
     flex-direction: column;
 }
-
 .product-form-label {
     margin-bottom: 0.5rem;
     color: #374151;
     font-weight: 600;
     font-size: 0.875rem;
 }
-
 .product-form-input,
 .product-form-textarea {
     width: 100%;
@@ -67,7 +59,6 @@
     transition: all 0.2s ease;
     box-sizing: border-box;
 }
-
 .product-form-input:focus,
 .product-form-textarea:focus {
     outline: none;
@@ -75,12 +66,10 @@
     background-color: #ffffff;
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
 }
-
 .product-form-textarea {
     resize: vertical;
     min-height: 120px;
 }
-
 .product-form-button {
     width: 100%;
     padding: 1rem 1.5rem;
@@ -94,23 +83,19 @@
     transition: background-color 0.2s ease, transform 0.1s;
     margin-top: 0.5rem;
 }
-
 .product-form-button:hover {
     background-color: #1e293b;
     box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
 }
-
 .product-form-button:active {
     transform: scale(0.98);
 }
-
 .product-form-button:disabled {
     background-color: #94a3b8;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
 }
-
 .product-form-message {
     margin-top: 1.5rem;
     padding: 1rem;
@@ -120,20 +105,16 @@
     font-weight: 500;
     animation: fadeIn 0.3s ease-out;
 }
-
 .product-form-message.success {
     background-color: #ecfdf5;
     color: #047857;
     border: 1px solid #a7f3d0;
 }
-
 .product-form-message.error {
     background-color: #fef2f2;
     color: #b91c1c;
     border: 1px solid #fecaca;
 }
-
-/* Page wrapper for full screen center */
 .product-page-wrapper {
     display: flex;
     align-items: flex-start;
